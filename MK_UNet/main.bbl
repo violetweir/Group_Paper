@@ -1,0 +1,228 @@
+\begin{thebibliography}{44}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Al-Dhabyani et~al.(2020)Al-Dhabyani, Gomaa, Khaled, and Fahmy]{al2020dataset}
+Walid Al-Dhabyani, Mohammed Gomaa, Hussien Khaled, and Aly Fahmy.
+\newblock Dataset of breast ultrasound images.
+\newblock \emph{Data in brief}, 28:\penalty0 104863, 2020.
+
+\bibitem[Bernal et~al.(2015)Bernal, S{\'a}nchez, Fern{\'a}ndez-Esparrach, Gil, Rodr{\'\i}guez, and Vilari{\~n}o]{bernal2015wm}
+Jorge Bernal, F~Javier S{\'a}nchez, Gloria Fern{\'a}ndez-Esparrach, Debora Gil, Cristina Rodr{\'\i}guez, and Fernando Vilari{\~n}o.
+\newblock Wm-dova maps for accurate polyp highlighting in colonoscopy: Validation vs. saliency maps from physicians.
+\newblock \emph{Computerized medical imaging and graphics}, 43:\penalty0 99--111, 2015.
+
+\bibitem[Caicedo et~al.(2019)Caicedo, Goodman, Karhohs, Cimini, Ackerman, Haghighi, Heng, Becker, Doan, McQuin, et~al.]{caicedo2019nucleus}
+Juan~C Caicedo, Allen Goodman, Kyle~W Karhohs, Beth~A Cimini, Jeanelle Ackerman, Marzieh Haghighi, CherKeng Heng, Tim Becker, Minh Doan, Claire McQuin, et~al.
+\newblock Nucleus segmentation across imaging experiments: the 2018 data science bowl.
+\newblock \emph{Nature methods}, 16\penalty0 (12):\penalty0 1247--1253, 2019.
+
+\bibitem[Cao et~al.(2022)Cao, Wang, Chen, Jiang, Zhang, Tian, and Wang]{cao2021swin}
+Hu Cao, Yueyue Wang, Joy Chen, Dongsheng Jiang, Xiaopeng Zhang, Qi Tian, and Manning Wang.
+\newblock Swin-unet: Unet-like pure transformer for medical image segmentation.
+\newblock In \emph{Proceedings of the European Conference on Computer Vision Workshops}, pages 205--218. Springer, 2022.
+
+\bibitem[Cardona et~al.(2010)Cardona, Saalfeld, Preibisch, Schmid, Cheng, Pulokas, Tomancak, and Hartenstein]{cardona2010integrated}
+Albert Cardona, Stephan Saalfeld, Stephan Preibisch, Benjamin Schmid, Anchi Cheng, Jim Pulokas, Pavel Tomancak, and Volker Hartenstein.
+\newblock An integrated micro-and macroarchitectural analysis of the drosophila brain by computer-assisted serial section electron microscopy.
+\newblock \emph{PLoS biology}, 8\penalty0 (10):\penalty0 e1000502, 2010.
+
+\bibitem[Chen et~al.(2024)Chen, Mei, Li, Lu, Yu, Wei, Luo, Xie, Adeli, Wang, et~al.]{chen2021transunet}
+Jieneng Chen, Jieru Mei, Xianhang Li, Yongyi Lu, Qihang Yu, Qingyue Wei, Xiangde Luo, Yutong Xie, Ehsan Adeli, Yan Wang, et~al.
+\newblock Transunet: Rethinking the u-net architecture design for medical image segmentation through the lens of transformers.
+\newblock \emph{Medical Image Analysis}, page 103280, 2024.
+
+\bibitem[Chen et~al.(2017{\natexlab{a}})Chen, Zhang, Xiao, Nie, Shao, Liu, and Chua]{chen2017sca}
+Long Chen, Hanwang Zhang, Jun Xiao, Liqiang Nie, Jian Shao, Wei Liu, and Tat-Seng Chua.
+\newblock Sca-cnn: Spatial and channel-wise attention in convolutional networks for image captioning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 5659--5667, 2017{\natexlab{a}}.
+
+\bibitem[Chen et~al.(2017{\natexlab{b}})Chen, Papandreou, Kokkinos, Murphy, and Yuille]{chen2017deeplab}
+Liang-Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, and Alan~L Yuille.
+\newblock Deeplab: Semantic image segmentation with deep convolutional nets, atrous convolution, and fully connected crfs.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 40\penalty0 (4):\penalty0 834--848, 2017{\natexlab{b}}.
+
+\bibitem[Codella et~al.(2019)Codella, Rotemberg, Tschandl, Celebi, Dusza, Gutman, Helba, Kalloo, Liopyris, Marchetti, et~al.]{codella2019skin}
+Noel Codella, Veronica Rotemberg, Philipp Tschandl, M~Emre Celebi, Stephen Dusza, David Gutman, Brian Helba, Aadi Kalloo, Konstantinos Liopyris, Michael Marchetti, et~al.
+\newblock Skin lesion analysis toward melanoma detection 2018: A challenge hosted by the international skin imaging collaboration (isic).
+\newblock \emph{arXiv preprint arXiv:1902.03368}, 2019.
+
+\bibitem[Codella et~al.(2018)Codella, Gutman, Celebi, Helba, Marchetti, Dusza, Kalloo, Liopyris, Mishra, Kittler, et~al.]{codella2018skin}
+Noel~CF Codella, David Gutman, M~Emre Celebi, Brian Helba, Michael~A Marchetti, Stephen~W Dusza, Aadi Kalloo, Konstantinos Liopyris, Nabin Mishra, Harald Kittler, et~al.
+\newblock Skin lesion analysis toward melanoma detection: A challenge at the 2017 international symposium on biomedical imaging (isbi), hosted by the international skin imaging collaboration (isic).
+\newblock In \emph{IEEE International Symposium on Biomedical Imaging}, pages 168--172. IEEE, 2018.
+
+\bibitem[Dosovitskiy et~al.(2020)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, et~al.]{dosovitskiy2020image}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et~al.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock \emph{arXiv preprint arXiv:2010.11929}, 2020.
+
+\bibitem[Fan et~al.(2020)Fan, Ji, Zhou, Chen, Fu, Shen, and Shao]{fan2020pranet}
+Deng-Ping Fan, Ge-Peng Ji, Tao Zhou, Geng Chen, Huazhu Fu, Jianbing Shen, and Ling Shao.
+\newblock Pranet: Parallel reverse attention network for polyp segmentation.
+\newblock In \emph{International Conference on Medical Image Computing and Computer-Assisted Intervention}, pages 263--273. Springer, 2020.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 770--778, 2016.
+
+\bibitem[Howard et~al.(2017)Howard, Zhu, Chen, Kalenichenko, Wang, Weyand, Andreetto, and Adam]{howard2017mobilenets}
+Andrew~G Howard, Menglong Zhu, Bo Chen, Dmitry Kalenichenko, Weijun Wang, Tobias Weyand, Marco Andreetto, and Hartwig Adam.
+\newblock Mobilenets: Efficient convolutional neural networks for mobile vision applications.
+\newblock \emph{arXiv preprint arXiv:1704.04861}, 2017.
+
+\bibitem[Hu et~al.(2018)Hu, Shen, and Sun]{hu2018squeeze}
+Jie Hu, Li Shen, and Gang Sun.
+\newblock Squeeze-and-excitation networks.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 7132--7141, 2018.
+
+\bibitem[Ibtehaz and Kihara(2023)]{ibtehaz2023acc}
+Nabil Ibtehaz and Daisuke Kihara.
+\newblock Acc-unet: A completely convolutional unet model for the 2020s.
+\newblock In \emph{International Conference on Medical Image Computing and Computer-Assisted Intervention}, pages 692--702. Springer, 2023.
+
+\bibitem[Ioffe and Szegedy(2015)]{ioffe2015batch}
+Sergey Ioffe and Christian Szegedy.
+\newblock Batch normalization: Accelerating deep network training by reducing internal covariate shift.
+\newblock In \emph{International Conference on Machine Learning}, pages 448--456. pmlr, 2015.
+
+\bibitem[Kim et~al.(2021)Kim, Lee, and Kim]{kim2021uacanet}
+Taehun Kim, Hyemin Lee, and Daijin Kim.
+\newblock Uacanet: Uncertainty augmented context attention for polyp segmentation.
+\newblock In \emph{ACM International Conference on Multimedia}, pages 2167--2175, 2021.
+
+\bibitem[Krizhevsky and Hinton(2010)]{krizhevsky2010convolutional}
+Alex Krizhevsky and Geoff Hinton.
+\newblock Convolutional deep belief networks on cifar-10.
+\newblock \emph{Unpublished manuscript}, 40\penalty0 (7):\penalty0 1--9, 2010.
+
+\bibitem[Lin et~al.(2023)Lin, Wu, Chen, Huang, and Jin]{lin2023scale}
+Weifeng Lin, Ziheng Wu, Jiayu Chen, Jun Huang, and Lianwen Jin.
+\newblock Scale-aware modulation meet transformer.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision}, pages 6015--6026, 2023.
+
+\bibitem[Liu et~al.(2024)Liu, Zhu, Liu, Yu, Chen, and Gao]{liu2024rolling}
+Yutong Liu, Haijiang Zhu, Mengting Liu, Huaiyuan Yu, Zihan Chen, and Jie Gao.
+\newblock Rolling-unet: Revitalizing mlp’s ability to efficiently extract long-distance dependencies for medical image segmentation.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial Intelligence}, pages 3819--3827, 2024.
+
+\bibitem[Liu et~al.(2021)Liu, Lin, Cao, Hu, Wei, Zhang, Lin, and Guo]{liu2021swin}
+Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and Baining Guo.
+\newblock Swin transformer: Hierarchical vision transformer using shifted windows.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision}, pages 10012--10022, 2021.
+
+\bibitem[Long et~al.(2015)Long, Shelhamer, and Darrell]{long2015fully}
+Jonathan Long, Evan Shelhamer, and Trevor Darrell.
+\newblock Fully convolutional networks for semantic segmentation.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 3431--3440, 2015.
+
+\bibitem[Loshchilov and Hutter(2017)]{loshchilov2017decoupled}
+Ilya Loshchilov and Frank Hutter.
+\newblock Decoupled weight decay regularization.
+\newblock \emph{arXiv preprint arXiv:1711.05101}, 2017.
+
+\bibitem[Nair and Hinton(2010)]{nair2010rectified}
+Vinod Nair and Geoffrey~E Hinton.
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In \emph{International Conference on Machine Learning}, pages 807--814, 2010.
+
+\bibitem[Oktay et~al.(2018)Oktay, Schlemper, Folgoc, Lee, Heinrich, Misawa, Mori, McDonagh, Hammerla, Kainz, et~al.]{oktay2018attention}
+Ozan Oktay, Jo Schlemper, Loic~Le Folgoc, Matthew Lee, Mattias Heinrich, Kazunari Misawa, Kensaku Mori, Steven McDonagh, Nils~Y Hammerla, Bernhard Kainz, et~al.
+\newblock Attention u-net: Learning where to look for the pancreas.
+\newblock In \emph{Medical Imaging with Deep Learning}, 2018.
+
+\bibitem[Rahman and Marculescu(2023{\natexlab{a}})]{Rahman_2023_WACV}
+Md~Mostafijur Rahman and Radu Marculescu.
+\newblock Medical image segmentation via cascaded attention decoding.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pages 6222--6231, 2023{\natexlab{a}}.
+
+\bibitem[Rahman and Marculescu(2023{\natexlab{b}})]{rahman2023multi}
+Md~Mostafijur Rahman and Radu Marculescu.
+\newblock Multi-scale hierarchical vision transformer with cascaded attention decoding for medical image segmentation.
+\newblock In \emph{Medical Imaging with Deep Learning}, 2023{\natexlab{b}}.
+
+\bibitem[Rahman and Marculescu(2024)]{rahman2024g}
+Md~Mostafijur Rahman and Radu Marculescu.
+\newblock G-cascade: Efficient cascaded graph convolutional decoding for 2d medical image segmentation.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pages 7728--7737, 2024.
+
+\bibitem[Rahman et~al.(2024)Rahman, Munir, and Marculescu]{rahman2024emcad}
+Md~Mostafijur Rahman, Mustafa Munir, and Radu Marculescu.
+\newblock Emcad: Efficient multi-scale convolutional attention decoding for medical image segmentation.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 11769--11779, 2024.
+
+\bibitem[Ronneberger et~al.(2015)Ronneberger, Fischer, and Brox]{ronneberger2015u}
+Olaf Ronneberger, Philipp Fischer, and Thomas Brox.
+\newblock U-net: Convolutional networks for biomedical image segmentation.
+\newblock In \emph{International Conference on Medical Image Computing and Computer-Assisted Intervention}, pages 234--241. Springer, 2015.
+
+\bibitem[Ruan et~al.(2022)Ruan, Xiang, Xie, Liu, and Fu]{ruan2022malunet}
+Jiacheng Ruan, Suncheng Xiang, Mingye Xie, Ting Liu, and Yuzhuo Fu.
+\newblock Malunet: A multi-attention and light-weight unet for skin lesion segmentation.
+\newblock In \emph{2022 IEEE International Conference on Bioinformatics and Biomedicine (BIBM)}, pages 1150--1156. IEEE, 2022.
+
+\bibitem[Ruan et~al.(2023)Ruan, Xie, Gao, Liu, and Fu]{ruan2023ege}
+Jiacheng Ruan, Mingye Xie, Jingsheng Gao, Ting Liu, and Yuzhuo Fu.
+\newblock Ege-unet: an efficient group enhanced unet for skin lesion segmentation.
+\newblock In \emph{International Conference on Medical Image Computing and Computer-Assisted Intervention}, pages 481--490. Springer, 2023.
+
+\bibitem[Sandler et~al.(2018)Sandler, Howard, Zhu, Zhmoginov, and Chen]{sandler2018mobilenetv2}
+Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, and Liang-Chieh Chen.
+\newblock Mobilenetv2: Inverted residuals and linear bottlenecks.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 4510--4520, 2018.
+
+\bibitem[Seo et~al.(2022)Seo, So, Yun, Lee, and Barg]{seo2022spatial}
+Hyunseok Seo, Seohee So, Sojin Yun, Seokjun Lee, and Jiseong Barg.
+\newblock Spatial feature conservation networks (sfcns) for dilated convolutions to improve breast cancer segmentation from dce-mri.
+\newblock In \emph{International Workshop on Applications of Medical AI}, pages 118--127. Springer, 2022.
+
+\bibitem[Tan and Le(2019)]{tan2019efficientnet}
+Mingxing Tan and Quoc Le.
+\newblock Efficientnet: Rethinking model scaling for convolutional neural networks.
+\newblock In \emph{International Conference on Machine Learning}, pages 6105--6114. PMLR, 2019.
+
+\bibitem[Tang et~al.(2024)Tang, Ding, Quan, Wang, Ning, and Zhou]{tang2023cmunext}
+Fenghe Tang, Jianrui Ding, Quan Quan, Lingtao Wang, Chunping Ning, and S~Kevin Zhou.
+\newblock Cmunext: An efficient medical image segmentation network based on large kernel and skip fusion.
+\newblock In \emph{IEEE International Symposium on Biomedical Imaging}, pages 1--5. IEEE, 2024.
+
+\bibitem[Valanarasu and Patel(2022)]{valanarasu2022unext}
+Jeya Maria~Jose Valanarasu and Vishal~M Patel.
+\newblock Unext: Mlp-based rapid medical image segmentation network.
+\newblock In \emph{International Conference on Medical Image Computing and Computer-Assisted Intervention}, pages 23--33. Springer, 2022.
+
+\bibitem[Valanarasu et~al.(2021)Valanarasu, Oza, Hacihaliloglu, and Patel]{valanarasu2021medical}
+Jeya Maria~Jose Valanarasu, Poojan Oza, Ilker Hacihaliloglu, and Vishal~M Patel.
+\newblock Medical transformer: Gated axial-attention for medical image segmentation.
+\newblock In \emph{International Conference on Medical Image Computing and Computer-Assisted Intervention}, pages 36--46. Springer, 2021.
+
+\bibitem[V{\'a}zquez et~al.(2017)V{\'a}zquez, Bernal, S{\'a}nchez, Fern{\'a}ndez-Esparrach, L{\'o}pez, Romero, Drozdzal, and Courville]{vazquez2017benchmark}
+David V{\'a}zquez, Jorge Bernal, F~Javier S{\'a}nchez, Gloria Fern{\'a}ndez-Esparrach, Antonio~M L{\'o}pez, Adriana Romero, Michal Drozdzal, and Aaron Courville.
+\newblock A benchmark for endoluminal scene segmentation of colonoscopy images.
+\newblock \emph{Journal of Healthcare Engineering}, 2017, 2017.
+
+\bibitem[Woo et~al.(2018)Woo, Park, Lee, and Kweon]{woo2018cbam}
+Sanghyun Woo, Jongchan Park, Joon-Young Lee, and In~So Kweon.
+\newblock Cbam: Convolutional block attention module.
+\newblock In \emph{International Conference on Machine Learning}, pages 3--19, 2018.
+
+\bibitem[Wu et~al.(2024)Wu, Liu, Liang, and Chang]{wu2024ultralight}
+Renkai Wu, Yinghao Liu, Pengchen Liang, and Qing Chang.
+\newblock Ultralight vm-unet: Parallel vision mamba significantly reduces parameters for skin lesion segmentation.
+\newblock \emph{arXiv preprint arXiv:2403.20035}, 2024.
+
+\bibitem[Zhang et~al.(2018)Zhang, Liu, and Wang]{zhang2018road}
+Zhengxin Zhang, Qingjie Liu, and Yunhong Wang.
+\newblock Road extraction by deep residual u-net.
+\newblock \emph{IEEE Geoscience and Remote Sensing Letters}, 15\penalty0 (5):\penalty0 749--753, 2018.
+
+\bibitem[Zhou et~al.(2018)Zhou, Rahman~Siddiquee, Tajbakhsh, and Liang]{zhou2018unet++}
+Zongwei Zhou, Md~Mahfuzur Rahman~Siddiquee, Nima Tajbakhsh, and Jianming Liang.
+\newblock Unet++: A nested u-net architecture for medical image segmentation.
+\newblock In \emph{International Workshop on Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support}, pages 3--11. Springer, 2018.
+
+\end{thebibliography}

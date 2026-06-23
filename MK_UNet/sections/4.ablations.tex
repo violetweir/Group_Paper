@@ -1,0 +1,28 @@
+
+%\vspace{-0.4cm}
+\section{Ablation Study}
+\label{sec:ablation_study}
+This section describes three critical ablation studies. More ablation results are given in the Appendix.
+%\vspace{-0.2cm}
+\subsection{Effect of different components}
+\label{ssec:components}
+Table \ref{tab:ablation_components} presents the performance of various configurations within the MK-UNet network across six medical image segmentation datasets, highlighting the impact of integrating different components like MKIR, GAG, and MKIRA. The comparison spans models from UNeXt to the advanced MKIR + GAG + MKIRA variant, revealing a progressive improvement in the DICE scores with the addition of each component. Notably, the multi-kernel trick, implemented through MKIR (in the encoder) and MKIRA (in the decoder) blocks, is the most critical component for improving the segmentation accuracy, increasing the DICE score from 72.41\% to 76.61\% on the BUSI dataset. This indicates the significant contribution of the multi-kernel approach to feature extraction and refinement. However, when we integrate all proposed modules (MKIR + GAG + MKIRA), our model achieves the highest overall DICE score of 78.04\% on the same dataset, with minimal computational resources (0.316M \#Params and 0.314G \#FLOPs). This exhibits the efficacy of combining multi-kernel convolution with attention mechanisms within MK-UNet.%, while proving its efficiency and effectiveness in handling complex medical imaging tasks with a significantly low computational footprint. 
+
+
+%\vspace{-0.4cm}
+\subsection{Effect of multiple kernels}
+\label{ssec:multiple_kernels}
+Table \ref{tab:multi_kernels} evaluates the influence of different convolutional kernel combinations on the performance of MKDC within the MK-UNet network, specifically for the BUSI dataset. By experimenting with a variety of kernel sizes ranging from $1$ to $3,5,7$, it becomes evident that a mix of $1,3,5$ kernels stands out by achieving the best DICE score of 78.04\% with a moderate increase in computational resources (0.316M \#Params and 0.314G \#FLOPs). This finding highlights the effectiveness of a multi-scale kernel approach in capturing diverse feature representations, thus significantly improving segmentation accuracy without a substantial rise in computational demands. Drawing from these empirical findings, we opt for the kernel combination of $[1,3,5]$ across all our experiments.
+
+
+\subsection{Effectiveness of our MKIR over IRB \cite{sandler2018mobilenetv2}}
+\label{app:irb_mkir}
+
+Table \ref{tab:ablation_irb_vs_mkir} reports the results of the original IRB of MobileNetv2 \cite{sandler2018mobilenetv2} and our proposed MKIR block. It can be concluded from the table that our MKIR significantly outperforms (up to 2.33\%) IRB in all the datasets with only an additional 0.035M \#Params and 0.07G \#FLOPs. The use of lightweight convolutions with multiple kernels contributes to these performance improvements with nominal additional computational resources.     
+
+
+
+\subsection{Effectiveness of MKIR vs. MKIRA in Encoder}
+\label{assec:mkir_mkira}
+Table \ref{tab:ablation_mkir_vs_mkira_encoder} demonstrates that employing MKIR in the encoder and MKIRA in the decoder yields superior performance across all datasets. Specifically, this configuration achieves the best average DICE scores of 78.04\% (BUSI), 93.48\% (Clinic), 90.01\% (Colon), 88.64\% (ISIC18), 92.71\% (DSB18), and 95.52\% (EM). The MKIR block in the encoder effectively extracts complex features by leveraging multiple kernels to capture a diverse range of spatial patterns and global contexts without the need for localized attention, which is more computationally intensive. Since the encoder primarily focuses on feature extraction, this design helps preserve critical details while maintaining lightweightness. In contrast, localized attention is crucial in the decoder to facilitate precise reconstruction. The MKIRA in the decoder attends to key spatial regions, enabling effective feature refinement. This complementary setup leads to an optimal balance between performance and computational cost, as evidenced by the superior results achieved with only 0.316M \#Params and 0.314G \#FLOPs.
+

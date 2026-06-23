@@ -1,0 +1,69 @@
+\clearpage
+\setcounter{page}{1}
+\maketitlesupplementary
+
+
+
+\subsection{Analysis of the number of channels}
+\label{assec:number_of_channels}
+We conduct an ablation study with the different number of channel dimensions in different stages of the network to show the scalability of our network.
+Table \ref{tab:ablation_channels} reports the results of this set of experiments. The progression from MK-UNet-T to MK-UNet-L in Table \ref{tab:ablation_channels} demonstrates a clear positive correlation between model complexity and performance. Starting with MK-UNet-T's minimal resource use (0.027M \#Params, 0.062G \#FLOPs) yielding a 75.64\% DICE score on BUSI, the score increases to 78.04\% with MK-UNet's moderate complexity (0.316M \#Params, 0.314G \#FLOPs), and peaks at 79.02\% with MK-UNet-L's higher resource demand (3.76M \#Params, 3.19G \#FLOPs). This trend of increasing DICE score with model complexity is consistent across datasets.
+
+
+
+\begin{table*}[!b]
+%\vspace{-0.5cm}
+\begin{center}
+    %{\small{
+    \begin{adjustbox}{width=0.9\textwidth}
+\begin{tabular}{c|r|r|r|r|r|r|r|r|r|r|r|r|r|r}
+\toprule
+Network     & C1    & C2 & C3 & C4 & C5  & \#Params & \#FLOPs & BUSI & Clinic & Colon & ISIC18 & DSB18 & EM                  \\
+\midrule
+MK-UNet-T           & 4  & 8 & 16  &  24 & 32     &  0.027M  & 0.062G & 75.64 & 91.26 &  85.03 & 88.19 & 92.38 & 94.69 \\
+MK-UNet-S          & 8  & 16  & 32   & 48 & 80     &  0.093M & 0.125G & 77.26 & 92.31 & 88.78 & 88.57 & 92.45 & 95.22 \\
+MK-UNet          & 16 & 32 & 64 & 96   & 160     & 0.316M & 0.314G &  78.04 & 93.48 &  90.01 & 88.74 & 92.71 & 95.52 \\
+MK-UNet-M          & 32  & 64  & 128  &  192   & 320    & 1.15M  & 0.951G &  78.27 & 93.67 & 90.27 & 89.08 & 92.74 & 95.62 \\
+MK-UNet-L          & 64  & 128  & 256 & 384  & 512    & 3.76M & 3.19G &  79.02 & 93.85 & 91.82 & 89.25 & 92.80 & 95.67 \\
+\bottomrule 
+\end{tabular}
+%}}
+\end{adjustbox}
+%\vspace{-0.3cm}
+\caption{Analysis of the number of channels on different datasets. \#FLOPs are reported for $256\times256$ inputs. We report the DICE scores (\%) averaging over five runs, thus having 1-4\% standard deviations.}
+%\vspace{-0.8cm}
+\label{tab:ablation_channels}
+\end{center}
+\end{table*}
+
+
+\subsection{Effectiveness of our Grouped Attention Gate (GAG) over Attention Gate (AG) \cite{oktay2018attention}}
+\label{assec:ag_gag}
+
+Table \ref{tab:ablation_ag_vs_gag} reports the results of the original AG of Attention UNet \cite{oktay2018attention} and our proposed GAG block. It can be seen from the table that our GAG surpasses AG in all datasets with 0.01M fewer \#Params and 0.06G less \#FLOPs. The use of group convolutions with a relatively larger kernel ($3$) contributes to these performance improvements with less computational costs.
+
+
+
+\begin{table*}[!b]
+%\vspace{-.2cm}
+\centering    %{\small{
+    \begin{adjustbox}{width=0.7\textwidth}
+\begin{tabular}{c|r|r|r|r|r|r|r|r}
+\toprule
+%\multicolumn{3}{c}{Components} & \multicolumn{2}{c}{\#FLOPs(G)} & \multicolumn{1}{c}{\#Params} & \multicolumn{1}{r}{Avg}  \\
+Blocks     & \#Params & \#FLOPs & BUSI & Clinic & Colon & ISIC18 & DSB18 & EM                    \\
+\midrule
+AG          & 0.326M     & 0.320G     & 77.61  & 93.02 & 89.78 & 88.38 & 92.48 & 95.31  \\
+GAG (\textbf{Ours})         & 0.316M    & 0.314G     & \textbf{78.04} & \textbf{93.48} & \textbf{90.01} & \textbf{88.64} & \textbf{92.71} & \textbf{95.52}         \\
+\bottomrule 
+\end{tabular}
+%}}
+\end{adjustbox}
+%\vspace{-0.2cm}
+\caption{Original Attention Gate (AG) \cite{sandler2018mobilenetv2} vs our Grouped Attention Gate (GAG) with \#channels = $[16,32,64,96,160]$ in MK-UNet. We use the kernel size of $3$ for GAG. We report the DICE scores (\%) averaging over five runs. Best results are shown in bold.}
+\vspace{-0.4cm}
+\label{tab:ablation_ag_vs_gag}
+\end{table*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

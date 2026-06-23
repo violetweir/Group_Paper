@@ -1,0 +1,115 @@
+\backcite {fan2020pranet}{{1}{1}{section.1}}
+\backcite {oktay2018attention}{{1}{1}{section.1}}
+\backcite {ronneberger2015u}{{1}{1}{section.1}}
+\backcite {zhou2018unet++}{{1}{1}{section.1}}
+\backcite {ronneberger2015u}{{1}{1}{section.1}}
+\backcite {zhou2018unet++}{{1}{1}{section.1}}
+\backcite {oktay2018attention}{{1}{1}{section.1}}
+\backcite {fan2020pranet}{{1}{1}{section.1}}
+\backcite {kim2021uacanet}{{1}{1}{section.1}}
+\backcite {chen2017deeplab}{{1}{1}{section.1}}
+\backcite {fan2020pranet}{{1}{1}{section.1}}
+\backcite {oktay2018attention}{{1}{1}{section.1}}
+\backcite {woo2018cbam}{{1}{1}{section.1}}
+\backcite {cao2021swin}{{1}{1}{section.1}}
+\backcite {chen2021transunet}{{1}{1}{section.1}}
+\backcite {Rahman_2023_WACV}{{1}{1}{section.1}}
+\backcite {rahman2024emcad}{{1}{1}{section.1}}
+\backcite {valanarasu2021medical}{{1}{1}{section.1}}
+\backcite {chen2021transunet}{{1}{1}{section.1}}
+\backcite {cao2021swin}{{1}{1}{section.1}}
+\backcite {valanarasu2021medical}{{1}{1}{section.1}}
+\backcite {valanarasu2022unext}{{1}{1}{section.1}}
+\backcite {tang2023cmunext}{{1}{1}{section.1}}
+\backcite {ruan2022malunet}{{1}{1}{section.1}}
+\backcite {ruan2023ege}{{1}{1}{section.1}}
+\backcite {liu2024rolling}{{1}{1}{section.1}}
+\backcite {ruan2023ege}{{2}{1}{figure.caption.1}}
+\backcite {chen2017deeplab}{{2}{2.1}{subsection.2.1}}
+\backcite {fan2020pranet}{{2}{2.1}{subsection.2.1}}
+\backcite {kim2021uacanet}{{2}{2.1}{subsection.2.1}}
+\backcite {oktay2018attention}{{2}{2.1}{subsection.2.1}}
+\backcite {ronneberger2015u}{{2}{2.1}{subsection.2.1}}
+\backcite {zhou2018unet++}{{2}{2.1}{subsection.2.1}}
+\backcite {long2015fully}{{3}{2.1}{subsection.2.1}}
+\backcite {ronneberger2015u}{{3}{2.1}{subsection.2.1}}
+\backcite {he2016deep}{{3}{2.1}{subsection.2.1}}
+\backcite {zhang2018road}{{3}{2.1}{subsection.2.1}}
+\backcite {zhou2018unet++}{{3}{2.1}{subsection.2.1}}
+\backcite {oktay2018attention}{{3}{2.1}{subsection.2.1}}
+\backcite {fan2020pranet}{{3}{2.1}{subsection.2.1}}
+\backcite {kim2021uacanet}{{3}{2.1}{subsection.2.1}}
+\backcite {chen2017deeplab}{{3}{2.1}{subsection.2.1}}
+\backcite {ibtehaz2023acc}{{3}{2.1}{subsection.2.1}}
+\backcite {dosovitskiy2020image}{{3}{2.2}{subsection.2.2}}
+\backcite {liu2021swin}{{3}{2.2}{subsection.2.2}}
+\backcite {cao2021swin}{{3}{2.2}{subsection.2.2}}
+\backcite {chen2021transunet}{{3}{2.2}{subsection.2.2}}
+\backcite {Rahman_2023_WACV}{{3}{2.2}{subsection.2.2}}
+\backcite {rahman2024emcad}{{3}{2.2}{subsection.2.2}}
+\backcite {valanarasu2021medical}{{3}{2.2}{subsection.2.2}}
+\backcite {chen2021transunet}{{3}{2.2}{subsection.2.2}}
+\backcite {cao2021swin}{{3}{2.2}{subsection.2.2}}
+\backcite {liu2021swin}{{3}{2.2}{subsection.2.2}}
+\backcite {valanarasu2021medical}{{3}{2.2}{subsection.2.2}}
+\backcite {Rahman_2023_WACV}{{3}{2.2}{subsection.2.2}}
+\backcite {rahman2024emcad}{{3}{2.2}{subsection.2.2}}
+\backcite {howard2017mobilenets}{{3}{2.3}{subsection.2.3}}
+\backcite {tan2019efficientnet}{{3}{2.3}{subsection.2.3}}
+\backcite {liu2024rolling}{{3}{2.3}{subsection.2.3}}
+\backcite {ruan2023ege}{{3}{2.3}{subsection.2.3}}
+\backcite {tang2023cmunext}{{3}{2.3}{subsection.2.3}}
+\backcite {valanarasu2022unext}{{3}{2.3}{subsection.2.3}}
+\backcite {valanarasu2022unext}{{3}{2.3}{subsection.2.3}}
+\backcite {tang2023cmunext}{{3}{2.3}{subsection.2.3}}
+\backcite {ruan2023ege}{{3}{2.3}{subsection.2.3}}
+\backcite {liu2024rolling}{{3}{2.3}{subsection.2.3}}
+\backcite {valanarasu2022unext}{{3}{3}{section.3}}
+\backcite {ioffe2015batch}{{3}{3.1}{subsection.3.1}}
+\backcite {krizhevsky2010convolutional}{{3}{3.1}{subsection.3.1}}
+\backcite {rahman2024emcad}{{4}{3.1}{equation.2}}
+\backcite {lin2023scale}{{4}{3.1}{equation.2}}
+\backcite {rahman2024emcad}{{4}{3.1}{equation.2}}
+\backcite {seo2022spatial}{{4}{3.1}{equation.2}}
+\backcite {hu2018squeeze}{{4}{3.2}{subsection.3.2}}
+\backcite {chen2017sca}{{4}{3.2}{subsection.3.2}}
+\backcite {hu2018squeeze}{{4}{3.2}{equation.3}}
+\backcite {Rahman_2023_WACV}{{4}{3.2}{equation.3}}
+\backcite {nair2010rectified}{{4}{3.2}{equation.3}}
+\backcite {chen2017sca}{{4}{3.2}{equation.4}}
+\backcite {oktay2018attention}{{5}{3.3}{subsection.3.3}}
+\backcite {rahman2024emcad}{{5}{3.3}{subsection.3.3}}
+\backcite {al2020dataset}{{5}{4.1}{subsection.4.1}}
+\backcite {bernal2015wm}{{5}{4.1}{subsection.4.1}}
+\backcite {vazquez2017benchmark}{{5}{4.1}{subsection.4.1}}
+\backcite {codella2019skin}{{5}{4.1}{subsection.4.1}}
+\backcite {caicedo2019nucleus}{{5}{4.1}{subsection.4.1}}
+\backcite {cardona2010integrated}{{5}{4.1}{subsection.4.1}}
+\backcite {loshchilov2017decoupled}{{5}{4.2}{subsection.4.2}}
+\backcite {al2020dataset}{{5}{4.2}{subsection.4.2}}
+\backcite {codella2018skin}{{5}{4.2}{subsection.4.2}}
+\backcite {cardona2010integrated}{{5}{4.2}{subsection.4.2}}
+\backcite {caicedo2019nucleus}{{5}{4.2}{subsection.4.2}}
+\backcite {bernal2015wm}{{5}{4.2}{subsection.4.2}}
+\backcite {vazquez2017benchmark}{{5}{4.2}{subsection.4.2}}
+\backcite {ruan2023ege}{{5}{4.3}{subsection.4.3}}
+\backcite {ronneberger2015u}{{6}{\caption@xref {??}{ on input line 38}}{table.caption.3}}
+\backcite {zhou2018unet++}{{6}{\caption@xref {??}{ on input line 40}}{table.caption.3}}
+\backcite {oktay2018attention}{{6}{\caption@xref {??}{ on input line 41}}{table.caption.3}}
+\backcite {chen2017deeplab}{{6}{\caption@xref {??}{ on input line 42}}{table.caption.3}}
+\backcite {fan2020pranet}{{6}{\caption@xref {??}{ on input line 43}}{table.caption.3}}
+\backcite {kim2021uacanet}{{6}{\caption@xref {??}{ on input line 44}}{table.caption.3}}
+\backcite {chen2021transunet}{{6}{\caption@xref {??}{ on input line 45}}{table.caption.3}}
+\backcite {cao2021swin}{{6}{\caption@xref {??}{ on input line 46}}{table.caption.3}}
+\backcite {liu2024rolling}{{6}{\caption@xref {??}{ on input line 50}}{table.caption.3}}
+\backcite {valanarasu2021medical}{{6}{\caption@xref {??}{ on input line 51}}{table.caption.3}}
+\backcite {valanarasu2022unext}{{6}{\caption@xref {??}{ on input line 52}}{table.caption.3}}
+\backcite {tang2023cmunext}{{6}{\caption@xref {??}{ on input line 53}}{table.caption.3}}
+\backcite {ruan2023ege}{{6}{\caption@xref {??}{ on input line 54}}{table.caption.3}}
+\backcite {wu2024ultralight}{{6}{\caption@xref {??}{ on input line 55}}{table.caption.3}}
+\backcite {sandler2018mobilenetv2}{{8}{4}{table.caption.7}}
+\backcite {sandler2018mobilenetv2}{{8}{5.3}{subsection.5.3}}
+\backcite {sandler2018mobilenetv2}{{8}{5.3}{subsection.5.3}}
+\backcite {oktay2018attention}{{1}{6.2}{subsection.6.2}}
+\backcite {oktay2018attention}{{1}{6.2}{subsection.6.2}}
+\backcite {sandler2018mobilenetv2}{{1}{7}{table.caption.12}}
