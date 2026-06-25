@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex IEEE-conference-template-062824"] 1782395207.31908 "IEEE-conference-template-062824.aux" "IEEE-conference-template-062824.bbl" "IEEE-conference-template-062824" 1782395229.40202 0
+["bibtex IEEE-conference-template-062824"] 1782404998.64005 "IEEE-conference-template-062824.aux" "IEEE-conference-template-062824.bbl" "IEEE-conference-template-062824" 1782404999.48214 0
   "./paper_refs.bib" 1782112903.39339 7938 71414acaab4f826ea32fc101dba1fc8d ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "IEEE-conference-template-062824.aux" 1782395229.12673 5911 ca69284c573883b8d2a7896069338590 "pdflatex"
+  "IEEE-conference-template-062824.aux" 1782404999.20483 6130 c4c5364ae76df30348ffee30f5342cc0 "pdflatex"
   (generated)
   "IEEE-conference-template-062824.bbl"
   "IEEE-conference-template-062824.blg"
   (rewritten before read)
-["pdflatex"] 1782395228.66649 "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1782395229.40222 0
+["pdflatex"] 1782404998.75871 "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1782404999.48228 0
   "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" 1782394165.27763 31011 e2f6ec56d4d32124c46df7ef2ab8d243 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -20,14 +20,19 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmrc7t.tfm" 1136768653 2680 312a2d12b1f1df8ee0212e7ba1962402 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmri7t.tfm" 1136768653 2288 f478fc8fed18759effb59f3dad7f3084 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmri8r.tfm" 1136768653 4640 532ca3305aad10cc01d769f3f91f1029 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib5.tfm" 1246382020 1496 c79f6914c6d39ffb3759967363d1be79 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmmib7.tfm" 1246382020 1508 6e807ff901c35a5f1fde0ca275533df8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1246382020 924 9904cf1d39e9767e7a3622f2a125a565 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1246382020 908 2921f8a10601f252058503cc6570e581 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1246382020 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbsy10.tfm" 1136768653 1116 4e6ba9d7914baa6482fd69f67d126380 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm" 1136768653 1332 f817c21a1ba54560425663374f1b651a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm" 1136768653 1344 8a0be4fe4d376203000810ad4dc81558 ""
@@ -35,6 +40,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx8.tfm" 1136768653 1332 1fde11373e221473104d6cc5993f046e ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi8.tfm" 1136768653 1520 eccf95517727cb11801f4f1aee3a21b4 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm" 1136768653 1524 554068197b70979a55370e6c6495f441 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr6.tfm" 1136768653 1300 b62933e007d01cfd073f79b963c01526 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr8.tfm" 1136768653 1292 21c1c5bfeaebccffdb478fd231a0997d ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
@@ -44,6 +50,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1248133631 37912 77d683123f92148345f3fc36a38d9ab1 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb" 1248133631 36912 b448ef9ad9d7228ec3c6e71005136d55 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1248133631 31809 8670ca339bf94e56da1fc21c80635e2a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
@@ -91,8 +98,8 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1753678625 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1753678515 3345738 5ac3075ea5f2f3ef594563ed932ed56b ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "IEEE-conference-template-062824.aux" 1782395229.12673 5911 ca69284c573883b8d2a7896069338590 "pdflatex"
-  "IEEE-conference-template-062824.bbl" 1782395207.44075 6466 256167a4f629ee6e34e2e5f2b04c091b "bibtex IEEE-conference-template-062824"
+  "IEEE-conference-template-062824.aux" 1782404999.20483 6130 c4c5364ae76df30348ffee30f5342cc0 "pdflatex"
+  "IEEE-conference-template-062824.bbl" 1782404998.75651 6682 8077b89c31852dff60461eb00281336a "bibtex IEEE-conference-template-062824"
   "IEEE-conference-template-062824.tex" 1782394165.27763 31011 e2f6ec56d4d32124c46df7ef2ab8d243 ""
   "IEEEtran.cls" 1781931502.87636 288304 b67b6fc6c2abb39f9b461923f5199343 ""
   "all-network.pdf" 1781931502.87545 124997 2b3a72f61d8c7461313edd92bc0ba8ca ""
@@ -100,7 +107,7 @@
   "figures/avg_dice_params.pdf" 1782052575.25194 22310 814c747c52559f4d0c43e34e92d9162a ""
   "sections/1-introduction.tex" 1782217382.04973 32315 7f2261b85b47f6bc669de57ce7b3fc1b ""
   "sections/2-related_work.tex" 1782218383.12048 14928 db29a3c01d3694676e7aca737a6a77a6 ""
-  "sections/3-method.tex" 1782395228.44372 12413 ff5522db01f8253ba9b5e1c1e79f817a ""
+  "sections/3-method.tex" 1782404997.60863 15491 f21109cdae6c4129ea82189d3913be9a ""
   (generated)
   "IEEE-conference-template-062824.aux"
   "IEEE-conference-template-062824.log"

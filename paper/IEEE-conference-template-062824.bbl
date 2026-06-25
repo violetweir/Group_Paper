@@ -74,6 +74,9 @@ H.~Cao, Y.~Wang, J.~Chen, D.~Jiang, X.~Zhang, Q.~Tian, and M.~Wang, ``Swin-unet:
 \bibitem{hinton2015distilling}
 G.~Hinton, O.~Vinyals, and J.~Dean, ``Distilling the knowledge in a neural network,'' in \emph{NeurIPS Deep Learning and Representation Learning Workshop}, 2015.
 
+\bibitem{velickovic2018gat}
+P.~Veli\v{c}kovi\'{c}, G.~Cucurull, A.~Casanova, A.~Romero, P.~Li\`{o}, and Y.~Bengio, ``Graph attention networks,'' in \emph{International Conference on Learning Representations}, 2018.
+
 \bibitem{al2020dataset}
 W.~Al-Dhabyani, M.~Gomaa, H.~Khaled, and A.~Fahmy, ``Dataset of breast ultrasound images,'' \emph{Data in Brief}, vol.~28, p. 104863, 2020.
 

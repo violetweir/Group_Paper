@@ -31,7 +31,7 @@ Each tensor $\mathbf{Y}_{k,m}$ corresponds to the response of scan direction $k$
 \end{equation}
 After layer normalization and linear projection, the node descriptor is transformed into $\mathbf{h}_{k,m}$.
 
-In our implementation, we adopt a factorized direction-group graph, where two nodes are connected if they share the same scan direction or the same channel group, and self-connections are included. For two connected nodes $i$ and $j$, additive graph-attention logits are computed as
+In our implementation, we adopt a factorized direction-group graph, where two nodes are connected if they share the same scan direction or the same channel group, and self-connections are included. For two connected nodes $i$ and $j$, additive graph-attention logits~\cite{velickovic2018gat} are computed as
 \begin{equation}
 e_{ij}
 =
@@ -75,6 +75,32 @@ Finally, the enhanced group responses are concatenated along the channel dimensi
 \end{equation}
 Output normalization is then applied to obtain the DG-GSS output.
 In this way, DG-GSS preserves the efficiency of grouped multi-directional selective scanning while explicitly modeling the structural relationship between scan directions and channel groups.
+
+
+
+\subsection{GAD-MambaUNet Architecture}
+
+After defining DG-GSS, we embed it into a lightweight block and integrate the block into an asymmetric U-shaped segmentation network. As shown in the upper-right part of Fig.~\ref{fig:overall-network}, the DG-GSS block consists of three residual components: a pre-scan local mixing stage, the proposed DG-GSS layer, and a post-scan local refinement stage. Given an input feature $\mathbf{x}$, the block is formulated as
+\begin{equation}
+\begin{aligned}
+\mathbf{u}_1 &= \mathbf{x}+\operatorname{FFN}_0(\operatorname{DW}_0(\mathbf{x})),\
+\mathbf{u}_2 &= \mathbf{u}_1+\operatorname{DG\text{-}GSS}(\mathbf{u}_1),\
+\mathbf{y} &= \mathbf{u}_2+\operatorname{FFN}_1(\operatorname{DW}_1(\mathbf{u}_2)),
+\end{aligned}
+\end{equation}
+where $\operatorname{DW}(\cdot)$ denotes depth-wise convolution for local mixing and $\operatorname{FFN}(\cdot)$ denotes a lightweight feed-forward refinement module. The local operators enhance short-range texture and channel interactions, while DG-GSS provides efficient long-range context aggregation through direction--group graph interaction.
+
+The overall GAD-MambaUNet follows a five-level encoder--decoder architecture, as shown in the left part of Fig.~\ref{fig:overall-network}. Given an input image $\mathbf{x}\in\mathbb{R}^{3\times H\times W}$, the network predicts a binary segmentation logit map $\mathbf{z}\in\mathbb{R}^{1\times H\times W}$. In the base configuration, the channel widths are set to $[16,32,64,96,160]$. To balance local boundary preservation and global context modeling, the first three encoder stages and the last three decoder stages use lightweight multi-kernel inverted residual (MKIR) blocks inherited from MK-UNet~\cite{rahman2025mkunet}, while the two deepest encoder stages and the first two decoder stages use DG-GSS blocks. Resolution and channel changes are performed outside these blocks through depth-wise downsampling with point-wise projection or point-wise projection followed by bilinear upsampling, keeping the feature width fixed inside each block.
+
+For decoder reconstruction, skip connections transfer high-resolution encoder features to the corresponding decoder stages. Before fusion, a grouped attention gate filters the skip feature according to the decoder context, reducing irrelevant background responses. Let $\mathbf{g}$ denote the upsampled decoder feature and $\mathbf{s}$ the encoder feature at the same resolution. The gated skip feature is computed as
+\begin{equation}
+\boldsymbol{\alpha}=\sigma!\left(\psi!\left(\phi(W_g\mathbf{g}+W_s\mathbf{s})\right)\right),\qquad
+\hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s},
+\end{equation}
+where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is ReLU, and $\psi$ maps the joint response to a spatial gate. The filtered skip feature $\hat{\mathbf{s}}$ is then fused with the decoder feature. The first decoder block operates at the deepest decoder level and provides the aligned student feature for the training-time DINOv3 supervision described in the next subsection.
+
+
+
 
 % \section{Methodology}
 
