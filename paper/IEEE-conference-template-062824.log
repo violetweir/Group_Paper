@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.28)  23 JUN 2026 21:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.28)  25 JUN 2026 21:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -356,12 +356,19 @@ File: all-network.pdf Graphic file (type pdf)
 <use all-network.pdf>
 Package pdftex.def Info: all-network.pdf  used on input line 75.
 (pdftex.def)             Requested size: 516.0pt x 276.02232pt.
-) (./sections/1-3-rewrite.tex)
+) (./sections/3-method.tex
 
 [3]
+Underfull \vbox (badness 1394) has occurred while \output is active []
 
 
-LaTeX Warning: Reference `fig:colondb-efficiency' on page 4 undefined on input line 245.
+
+
+
+[4 <./all-network.pdf>])
+
+
+LaTeX Warning: Reference `fig:colondb-efficiency' on page 5 undefined on input line 245.
 
 
 Underfull \hbox (badness 2495) in paragraph at lines 245--246
@@ -375,18 +382,16 @@ Underfull \hbox (badness 2150) in paragraph at lines 245--246
 
 
 
-[4 <./all-network.pdf>]
+[5] (./IEEE-conference-template-062824.bbl
 
-(./IEEE-conference-template-062824.bbl
 
-[5]
 Underfull \hbox (badness 5504) in paragraph at lines 48--49
 []\OT1/ptm/m/n/8 M. M. Rah-man and R. Mar-culescu, ``MK-UNet: Multi-kernel
  []
 
 
 
-)
+[6])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -400,7 +405,11 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[6] (./IEEE-conference-template-062824.aux)
+
+
+[7
+
+] (./IEEE-conference-template-062824.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -411,18 +420,18 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 4157 strings out of 473190
- 66410 string characters out of 5715800
- 488454 words of memory out of 5000000
- 27363 multiletter control sequences out of 15000+600000
- 599155 words of font info for 110 fonts, out of 8000000 for 9000
+ 4169 strings out of 473190
+ 66543 string characters out of 5715800
+ 495136 words of memory out of 5000000
+ 27370 multiletter control sequences out of 15000+600000
+ 600703 words of font info for 115 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1782b,283s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (6 pages, 304661 bytes).
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on IEEE-conference-template-062824.pdf (7 pages, 372280 bytes).
 PDF statistics:
- 205 PDF objects out of 1000 (max. 8388607)
- 65 compressed objects within 1 object stream
+ 240 PDF objects out of 1000 (max. 8388607)
+ 87 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

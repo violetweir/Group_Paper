@@ -35,37 +35,32 @@
 \citation{simeoni2025dinov3}
 \citation{hinton2015distilling}
 \citation{liao2025rtdetrv4}
-\citation{al2020dataset}
-\citation{codella2019skin}
-\citation{bernal2015clinicdb}
-\citation{tajbakhsh2016colondb,vazquez2017benchmark}
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Medical Segmentation and Lightweight U-Shaped Networks}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Visual State-Space Models}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Foundation-Model Distillation for Lightweight Segmentation}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Methodology}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments and Results}{3}{}\protected@file@percent }
-\newlabel{sec:experiments}{{IV}{3}{}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Datasets and Metrics}{3}{}\protected@file@percent }
-\citation{rahman2025mkunet}
-\citation{rahman2025mkunet}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Direction-Group Graph Selective Scan}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Overall architecture of GAD-MambaUNet. High-resolution stages retain multi-kernel local modeling, whereas deep stages use grouped state-space blocks with DG-GSS. During training, a frozen DINOv3 teacher supervises the first decoder block and GAD regulates the distillation coefficient according to its gradient share. The teacher and projection head are removed at inference.}}{4}{}\protected@file@percent }
 \newlabel{fig:overall-network}{{2}{4}{}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Implementation Protocol}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Reference Baseline Analysis}{4}{}\protected@file@percent }
-\bibstyle{IEEEtran}
-\bibdata{paper_refs}
-\bibcite{ronneberger2015unet}{1}
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Comparison on four datasets. Non-PH$^2$ baseline values are taken from the original MK-UNet paper under its reported protocol. Dice scores are reported in \%. PH$^2$, ClinicDB, and ColonDB entries for MK-UNet and GAD-MambaUNet are mean test Dice at the validation-selected checkpoint over repeated runs. DINOv3 is used only during training and adds no inference cost.}}{5}{}\protected@file@percent }
-\newlabel{tab:reference_results}{{I}{5}{}{table.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Planned ablation variants for GAD-MambaUNet. Values are left blank until the corresponding experiments are completed.}}{5}{}\protected@file@percent }
-\newlabel{tab:ablation_plan}{{II}{5}{}{table.2}{}}
+\citation{al2020dataset}
+\citation{codella2019skin}
+\citation{bernal2015clinicdb}
+\citation{tajbakhsh2016colondb,vazquez2017benchmark}
+\citation{rahman2025mkunet}
+\citation{rahman2025mkunet}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Experiments and Results}{5}{}\protected@file@percent }
+\newlabel{sec:experiments}{{IV}{5}{}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Datasets and Metrics}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Implementation Protocol}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Reference Baseline Analysis}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Ablation Study}{5}{}\protected@file@percent }
 \newlabel{sec:ablation}{{V}{5}{}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Effect of Direction-Group Global Modeling}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Effect of DINOv3 Distillation}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{5}{}\protected@file@percent }
-\newlabel{sec:conclusion}{{VI}{5}{}{section.6}{}}
+\bibstyle{IEEEtran}
+\bibdata{paper_refs}
+\bibcite{ronneberger2015unet}{1}
 \bibcite{fan2020pranet}{2}
 \bibcite{kim2021uacanet}{3}
 \bibcite{chen2021transunet}{4}
@@ -80,6 +75,13 @@
 \bibcite{wu2024ultralight}{13}
 \bibcite{liao2025rtdetrv4}{14}
 \bibcite{simeoni2025dinov3}{15}
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Comparison on four datasets. Non-PH$^2$ baseline values are taken from the original MK-UNet paper under its reported protocol. Dice scores are reported in \%. PH$^2$, ClinicDB, and ColonDB entries for MK-UNet and GAD-MambaUNet are mean test Dice at the validation-selected checkpoint over repeated runs. DINOv3 is used only during training and adds no inference cost.}}{6}{}\protected@file@percent }
+\newlabel{tab:reference_results}{{I}{6}{}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Planned ablation variants for GAD-MambaUNet. Values are left blank until the corresponding experiments are completed.}}{6}{}\protected@file@percent }
+\newlabel{tab:ablation_plan}{{II}{6}{}{table.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{6}{}\protected@file@percent }
+\newlabel{sec:conclusion}{{VI}{6}{}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
 \bibcite{liu2021swin}{16}
 \bibcite{cao2022swinunet}{17}
 \bibcite{hinton2015distilling}{18}
@@ -88,5 +90,4 @@
 \bibcite{bernal2015clinicdb}{21}
 \bibcite{tajbakhsh2016colondb}{22}
 \bibcite{vazquez2017benchmark}{23}
-\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
-\gdef \@abspage@last{6}
+\gdef \@abspage@last{7}
