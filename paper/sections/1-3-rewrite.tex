@@ -1,150 +1,104 @@
-\section{Introduction}
-
-Accurate medical image segmentation is fundamental to computer-aided diagnosis, treatment planning, and quantitative disease assessment. Given a medical image, the goal is to delineate clinically relevant structures at the pixel level while preserving their boundaries and spatial extent. This task is challenging because medical targets can be small, irregular, weakly contrasted, or visually similar to surrounding tissue. A useful segmentation model must therefore combine fine-grained local evidence, which is needed for boundary recovery, with sufficient contextual information to distinguish ambiguous foreground and background regions.
-
-U-Net~\cite{ronneberger2015unet} established the dominant encoder--decoder paradigm for medical image segmentation. Its contracting path extracts increasingly abstract semantic representations, while skip connections transfer high-resolution encoder features to the decoder for spatially precise reconstruction. Building on this design, numerous CNN-based methods have improved feature fusion, attention, boundary refinement, and multi-scale decoding. For example, PraNet~\cite{fan2020pranet} uses parallel partial decoding and reverse attention for polyp segmentation, whereas UACANet~\cite{kim2021uacanet} introduces uncertainty-aware context attention. These methods demonstrate the importance of combining semantic understanding with accurate localization.
-
-Despite their success, convolutional networks have an intrinsic limitation: their local receptive fields do not directly capture long-range dependencies. This limitation becomes important when the correct interpretation of a boundary depends on distant structures or broader anatomical context. Transformer-based networks, such as TransUNet~\cite{chen2021transunet}, address this issue by introducing self-attention for global feature interaction. However, global attention and large pretrained backbones can substantially increase parameter count, memory usage, and computational cost. Thus, stronger contextual modeling does not automatically translate into a practical solution when inference resources are limited.
-
-\begin{figure*}[!t]
-    \centering
-    \includegraphics[width=0.49\textwidth]{figures/colondb_dice_params.pdf}\hfill
-    \includegraphics[width=0.49\textwidth]{figures/colondb_dice_flops.pdf}
-    \caption{ColonDB accuracy--efficiency comparison. Left: Dice versus student-side parameters. Right: Dice versus FLOPs. Reference values are from the MK-UNet comparison protocol, whose FLOPs are reported at $256\times256$ input resolution; they are used here for a uniform relative comparison. GAD-MambaUNet uses Tiny, Base, and Large variants, while the DINOv3 setting uses Tiny, Base, and Medium variants. DINOv3 is a training-only teacher and is excluded from deployment cost.}
-    \label{fig:colondb-efficiency}
-\end{figure*}
-
-As medical imaging solutions increasingly move from laboratory-centered analysis to point-of-care applications, segmentation accuracy is no longer the only design objective. Parameter count, computational complexity, memory footprint, and inference efficiency also determine whether a model can be used in realistic clinical or edge-device settings. This transition has motivated lightweight medical segmentation networks based on depth-wise convolution, compact channel schedules, grouped operators, and efficient token mixing. UNeXt~\cite{valanarasu2022unext}, CMUNeXt~\cite{tang2024cmunext}, EGE-UNet~\cite{ruan2023egeunet}, and EMCAD~\cite{rahman2024emcad} are representative examples. In particular, MK-UNet~\cite{rahman2025mkunet} uses multi-kernel depth-wise convolution and lightweight decoder attention to retain local multi-scale modeling at a compact cost. Nevertheless, lightweight CNN-dominated backbones can still lack the global evidence needed when boundaries are incomplete or distant regions share similar texture.
-
-Visual state-space models provide a promising route to efficient global modeling. Mamba~\cite{gu2023mamba} models input-dependent sequences with linear complexity, and VMamba~\cite{liu2024vmamba} extends selective scanning to two-dimensional visual features. VM-UNet~\cite{ruan2024vmunet} integrates visual state-space blocks into a U-shaped architecture for medical image segmentation. To further reduce the cost of Vision Mamba, UltraLight VM-UNet~\cite{wu2024ultralight} partitions deep features into multiple parallel channel groups and processes them using parallel Vision Mamba branches. This design reduces the parameter and computational cost of global modeling. However, partitioning features into groups also creates a representation-isolation issue. In conventional grouped multi-directional selective scanning, each direction--group branch is processed independently and the responses are merged only after selective scanning. Consequently, complementary context from different traversal directions and channel groups cannot influence one another before fusion. This limitation motivates our DG-GSS, which enables structured direction--group interaction before multi-directional fusion.
-
-To address these issues, we propose \emph{GAD-MambaUNet}, an asymmetric local--global U-shaped network for lightweight medical image segmentation. The architecture preserves multi-kernel convolution at high-resolution stages, where local texture extraction and boundary reconstruction are most important, and introduces grouped state-space blocks at deep low-resolution stages, where global reasoning is more economical. Within each state-space block, we propose Direction-Group Graph Selective Scan (DG-GSS). DG-GSS represents each scan-direction and channel-group response as a graph node, then enables structured information exchange among nodes sharing the same direction or the same channel-group identity before multi-directional fusion. In addition, a frozen DINOv3 teacher~\cite{simeoni2025dinov3} provides dense semantic supervision during training. Drawing on gradient-guided semantic modulation for real-time detection~\cite{liao2025rtdetrv4}, Gradient-Adaptive Distillation (GAD) regulates the distillation coefficient from the gradient share of the aligned decoder block; the teacher and projection head are discarded during inference. To evaluate the proposed method, we conduct experiments on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB. Fig.~\ref{fig:colondb-efficiency} illustrates the available ColonDB accuracy--efficiency comparison.
-
-The contributions of this work are summarized as follows:
-\begin{itemize}
-    \item We develop an asymmetric lightweight U-shaped architecture that combines high-resolution multi-kernel local modeling with deep grouped state-space modeling for efficient context aggregation.
-    \item We propose DG-GSS, which explicitly exchanges information among direction--group responses before multi-directional fusion through a factorized graph.
-    \item We introduce training-time DINOv3 feature supervision with GAD, which regulates distillation using the gradient share of the aligned decoder block and adds no teacher-side inference cost.
-\end{itemize}
-
-\section{Related Work}
-
-\subsection{Medical Segmentation and Lightweight U-Shaped Networks}
-
-U-Net~\cite{ronneberger2015unet} and its encoder--decoder variants remain a primary template for medical image segmentation because skip connections combine deep semantic features with spatially precise reconstruction. Task-specific methods strengthen this template through mechanisms such as reverse attention in PraNet~\cite{fan2020pranet} and uncertainty-aware context attention in UACANet~\cite{kim2021uacanet}. TransUNet~\cite{chen2021transunet} instead introduces a Transformer encoder to enlarge the receptive field through global self-attention. These approaches establish the value of contextual reasoning, but their attention modules or pretrained encoders can be costly when the deployment budget is limited.
-Lightweight U-shaped networks reduce this cost through compact channel schedules and efficient local operators. UNeXt~\cite{valanarasu2022unext} combines convolution with shifted MLP blocks, CMUNeXt~\cite{tang2024cmunext} uses large kernels and skip fusion, EGE-UNet~\cite{ruan2023egeunet} develops group-enhanced attention, and EMCAD~\cite{rahman2024emcad} employs efficient multi-scale convolutional decoding. MK-UNet~\cite{rahman2025mkunet} further uses parallel multi-kernel depth-wise convolutions, channel shuffle, and lightweight decoder attention to capture multi-scale boundary evidence.
-
-\subsection{Visual State-Space Models}
-
-State-space models offer an efficient alternative to self-attention for long-range dependency modeling. Mamba~\cite{gu2023mamba} uses input-dependent state transitions with linear sequence complexity, while VMamba~\cite{liu2024vmamba} extends selective scanning to visual feature maps through multiple two-dimensional traversal directions. VM-UNet~\cite{ruan2024vmunet} incorporates visual state-space blocks into a U-shaped segmentation architecture. For lightweight medical segmentation, UltraLight VM-UNet~\cite{wu2024ultralight} further reduces Vision Mamba cost by partitioning deep features into parallel channel groups and processing them with parallel Vision Mamba branches.
-In grouped multi-directional scans, direction--group branches are typically processed independently and merged only after selective scanning. This design can limit information exchange across traversal directions and channel subspaces before fusion.
-
-\subsection{Foundation-Model Distillation for Lightweight Segmentation}
-
-Strong Transformer encoders and vision foundation models provide rich semantic representations for medical image segmentation. Swin Transformer~\cite{liu2021swin} and its medical segmentation variant Swin-Unet~\cite{cao2022swinunet} model hierarchical visual features, while DINOv3~\cite{simeoni2025dinov3} provides dense features through large-scale self-supervised pretraining. However, directly deploying such large encoders conflicts with the parameter, memory, and latency budgets of lightweight systems.
-
-Feature-level distillation offers a practical alternative: a frozen teacher provides dense supervision only during training, allowing a compact student to inherit semantic context without the teacher's deployment cost~\cite{hinton2015distilling}. Most distillation settings use a fixed distillation coefficient. However, a fixed coefficient cannot adapt to the dynamic state of optimization: as training progresses, the gradient contribution of the teacher-supervised deep student feature to the overall network can change, so the same coefficient may yield insufficient teacher supervision or impose an overly strong constraint on the primary task objective.
-To address this dynamic balancing problem, RT-DETRv4~\cite{liao2025rtdetrv4} proposes a gradient-aware distillation strategy for real-time detection. In its reported configuration, a frozen DINOv3-ViT-B teacher supervises deep detector features through a Deep Semantic Injector. Its Gradient-guided Adaptive Modulation adjusts the semantic-transfer strength using gradient norm ratios, enabling teacher supervision to remain coordinated with the detection objective as the optimization state evolves.
-
-\begin{figure*}[t]
-    \centering
-    \includegraphics[width=\textwidth]{all-network.pdf}
-    \caption{Overall architecture of GAD-MambaUNet. High-resolution stages retain multi-kernel local modeling, whereas deep stages use grouped state-space blocks with DG-GSS. During training, a frozen DINOv3 teacher supervises the first decoder block and GAD regulates the distillation coefficient according to its gradient share. The teacher and projection head are removed at inference.}
-    \label{fig:overall-network}
-\end{figure*}
-
 \section{Methodology}
 
-\subsection{Overview}
 
-Fig.~\ref{fig:overall-network} presents GAD-MambaUNet. Given an image $\mathbf{x}\in\mathbb{R}^{3\times H\times W}$, the student produces a binary logit map $\mathbf{z}\in\mathbb{R}^{1\times H\times W}$. The base model uses five resolution levels with channel widths $[16,32,64,96,160]$. The first three encoder blocks and the last three decoder blocks are multi-kernel inverted residual (MKIR) blocks. The two deepest encoder blocks and the first two decoder blocks are grouped Mamba blocks. Resolution and channel changes are performed outside these blocks by depth-wise downsampling followed by point-wise projection, or by point-wise projection followed by bilinear upsampling. This separation keeps the state-space width fixed within each block.
+We describe the proposed GAD-MambaUNet by first introducing its core building block and then integrating it into an asymmetric U-shaped segmentation architecture. 
+As shown in Fig.~\ref{fig:overall-network}, the left part presents the overall student network and the training-time DINOv3 teacher, while the right part details the proposed block-level design and the internal structure of Direction-Group Graph Selective Scan (DG-GSS). 
+We first present DG-GSS, which enables structured interaction among scan directions and channel groups. Then, we describe how DG-GSS is embedded into the overall GAD-MambaUNet architecture. Finally, we introduce the training-time DINOv3 supervision with Gradient-Adaptive Distillation (GAD), where the teacher model is used only during training and removed during inference.
 
-At every decoder level, channel and spatial attention refine the decoder feature, while a grouped attention gate filters the corresponding skip connection before additive fusion. The first decoder block operates at $H/32\times W/32$ and supplies the student feature used for DINOv3 supervision. This location is semantically rich, inexpensive, and directly aligned with the block monitored by GAD.
 
-\subsection{Asymmetric Local--Global Student}
 
-At high resolution, the dominant requirement is local boundary reconstruction. We therefore retain the MKIR design of MK-UNet~\cite{rahman2025mkunet}: a $1\times1$ expansion, parallel depth-wise convolutions with kernels $\mathcal{K}=\{1,3,5\}$, summation, channel shuffle, and a $1\times1$ projection. For feature $\mathbf{x}$, the block is written compactly as
-\begin{equation}
-\operatorname{MKIR}(\mathbf{x})=
-P_2\!\left(\operatorname{Shuffle}\!\left[
-\sum_{k\in\mathcal{K}}D_k\!\left(P_1(\mathbf{x})\right)\right]\right),
-\end{equation}
-where $P_1$ and $P_2$ denote point-wise expansion and projection and $D_k$ is a depth-wise convolution with kernel size $k$. The block supplies multi-receptive-field local evidence at low cost.
+% \section{Methodology}
 
-At low resolution, the receptive field can be enlarged more efficiently. A grouped Mamba block first applies depth-wise local mixing and a grouped shuffle feed-forward network (FFN), then DG-GSS, and finally a second local mixing--FFN pair. Each component is residual:
-\begin{equation}
-\begin{aligned}
-\mathbf{u}_1 &= \mathbf{x}+\operatorname{FFN}_0(\operatorname{DW}_0(\mathbf{x})),\\
-\mathbf{u}_2 &= \mathbf{u}_1+\operatorname{DG\text{-}GSS}(\mathbf{u}_1),\\
-\mathbf{y} &= \mathbf{u}_2+\operatorname{FFN}_1(\operatorname{DW}_1(\mathbf{u}_2)).
-\end{aligned}
-\end{equation}
-The local operators therefore refine state-space features instead of competing with them.
+% \subsection{Overview}
 
-For skip fusion, let $\mathbf{g}$ denote the upsampled decoder feature and $\mathbf{s}$ the encoder feature at the same resolution. A grouped attention gate computes
-\begin{equation}
-\boldsymbol{\alpha}=\sigma\!\left(\psi\!\left(\phi(W_g\mathbf{g}+W_s\mathbf{s})\right)\right),\qquad
-\hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s},
-\end{equation}
-where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is ReLU, and $\psi$ maps the joint response to a spatial gate. The decoder feature and $\hat{\mathbf{s}}$ are then added.
+% Fig.~\ref{fig:overall-network} presents GAD-MambaUNet. Given an image $\mathbf{x}\in\mathbb{R}^{3\times H\times W}$, the student produces a binary logit map $\mathbf{z}\in\mathbb{R}^{1\times H\times W}$. The base model uses five resolution levels with channel widths $[16,32,64,96,160]$. The first three encoder blocks and the last three decoder blocks are multi-kernel inverted residual (MKIR) blocks. The two deepest encoder blocks and the first two decoder blocks are grouped Mamba blocks. Resolution and channel changes are performed outside these blocks by depth-wise downsampling followed by point-wise projection, or by point-wise projection followed by bilinear upsampling. This separation keeps the state-space width fixed within each block.
 
-\subsection{Direction-Group Graph Selective Scan}
+% At every decoder level, channel and spatial attention refine the decoder feature, while a grouped attention gate filters the corresponding skip connection before additive fusion. The first decoder block operates at $H/32\times W/32$ and supplies the student feature used for DINOv3 supervision. This location is semantically rich, inexpensive, and directly aligned with the block monitored by GAD.
 
-Let $\mathbf{X}\in\mathbb{R}^{B\times D\times h\times w}$ be the input to DG-GSS. We use four Cross2D traversal directions and partition the inner state-space channels into $M$ groups. With $d=D/M$ and $L=hw$, cross scanning yields
-\begin{equation}
-\mathbf{X}_{\mathrm{scan}}\in\mathbb{R}^{B\times K\times M\times d\times L},\qquad K=4.
-\end{equation}
-Every direction--group pair independently produces its selective-scan parameters $(\Delta,\mathbf{B},\mathbf{C})$. Selective scan is applied to each pair and the four outputs are spatially realigned to the original coordinate system:
-\begin{equation}
-\mathbf{Y}\in\mathbb{R}^{B\times K\times M\times d\times h\times w}.
-\end{equation}
+% \subsection{Asymmetric Local--Global Student}
 
-The tensor $\mathbf{Y}_{k,m}$ is a response from direction $k$ and channel group $m$. We regard it as a graph node and obtain a node descriptor by global average pooling:
-\begin{equation}
-\mathbf{r}_{k,m}=\frac{1}{hw}\sum_{u,v}\mathbf{Y}_{k,m,:,u,v}.
-\end{equation}
-After layer normalization and linear projection, additive graph-attention logits~\cite{velickovic2018gat} are
-\begin{equation}
-e_{ij}=\operatorname{LeakyReLU}\left(\mathbf{a}_{s}^{\top}\mathbf{h}_i+
-\mathbf{a}_{t}^{\top}\mathbf{h}_j\right).
-\end{equation}
-Our factorized adjacency connects two nodes when they have the same scan direction or the same channel-group identity, including self-connections. Thus, a node receives both cross-group and cross-direction evidence without constructing an unconstrained fully connected graph. With masked softmax weights $a_{ij}$ and shared $1\times1$ value projection $V(\cdot)$, graph propagation is
-\begin{equation}
-\widetilde{\mathbf{Y}}_i=\mathbf{Y}_i+\gamma\sum_{j\in\mathcal{N}(i)}a_{ij}V(\mathbf{Y}_j),
-\end{equation}
-where $\gamma$ is learnable and initialized to zero. DG-GSS consequently starts from the original grouped scan behavior and learns graph exchange progressively. Finally, groups are concatenated and the four aligned directions are summed before output normalization.
+% At high resolution, the dominant requirement is local boundary reconstruction. We therefore retain the MKIR design of MK-UNet~\cite{rahman2025mkunet}: a $1\times1$ expansion, parallel depth-wise convolutions with kernels $\mathcal{K}=\{1,3,5\}$, summation, channel shuffle, and a $1\times1$ projection. For feature $\mathbf{x}$, the block is written compactly as
+% \begin{equation}
+% \operatorname{MKIR}(\mathbf{x})=
+% P_2\!\left(\operatorname{Shuffle}\!\left[
+% \sum_{k\in\mathcal{K}}D_k\!\left(P_1(\mathbf{x})\right)\right]\right),
+% \end{equation}
+% where $P_1$ and $P_2$ denote point-wise expansion and projection and $D_k$ is a depth-wise convolution with kernel size $k$. The block supplies multi-receptive-field local evidence at low cost.
 
-\subsection{DINOv3 Supervision and Gradient-Adaptive Distillation}
+% At low resolution, the receptive field can be enlarged more efficiently. A grouped Mamba block first applies depth-wise local mixing and a grouped shuffle feed-forward network (FFN), then DG-GSS, and finally a second local mixing--FFN pair. Each component is residual:
+% \begin{equation}
+% \begin{aligned}
+% \mathbf{u}_1 &= \mathbf{x}+\operatorname{FFN}_0(\operatorname{DW}_0(\mathbf{x})),\\
+% \mathbf{u}_2 &= \mathbf{u}_1+\operatorname{DG\text{-}GSS}(\mathbf{u}_1),\\
+% \mathbf{y} &= \mathbf{u}_2+\operatorname{FFN}_1(\operatorname{DW}_1(\mathbf{u}_2)).
+% \end{aligned}
+% \end{equation}
+% The local operators therefore refine state-space features instead of competing with them.
 
-A frozen DINOv3 ViT-B/16 teacher provides dense features only during training. The feature $\mathbf{F}_s$ after the first decoder block is projected by a $1\times1$ convolution and batch normalization to the teacher dimension. The teacher feature $\mathbf{F}_t$ is bilinearly resized when necessary. After flattening each map into spatial tokens and applying $\ell_2$ normalization, the feature loss is
-\begin{equation}
-\mathcal{L}_{\mathrm{dist}}=
-\frac{1}{N}\sum_{n=1}^{N}\left[1-
-\frac{\mathbf{f}_{s,n}^{\top}\mathbf{f}_{t,n}}
-{\|\mathbf{f}_{s,n}\|_2\|\mathbf{f}_{t,n}\|_2}\right].
-\end{equation}
-The segmentation objective follows the structure-aware weighted BCE and weighted IoU loss~\cite{fan2020pranet}:
-\begin{equation}
-\mathcal{L}=\mathcal{L}_{\mathrm{seg}}+\lambda_e\mathcal{L}_{\mathrm{dist}},
-\qquad
-\mathcal{L}_{\mathrm{seg}}=\mathcal{L}_{\mathrm{wbce}}+\mathcal{L}_{\mathrm{wiou}}.
-\end{equation}
+% For skip fusion, let $\mathbf{g}$ denote the upsampled decoder feature and $\mathbf{s}$ the encoder feature at the same resolution. A grouped attention gate computes
+% \begin{equation}
+% \boldsymbol{\alpha}=\sigma\!\left(\psi\!\left(\phi(W_g\mathbf{g}+W_s\mathbf{s})\right)\right),\qquad
+% \hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s},
+% \end{equation}
+% where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is ReLU, and $\psi$ maps the joint response to a spatial gate. The decoder feature and $\hat{\mathbf{s}}$ are then added.
 
-Using a fixed $\lambda_e$ assumes that the appropriate teacher pressure remains unchanged throughout training. Instead, after backpropagation and before gradient clipping, GAD measures the gradient share of the aligned decoder block:
-\begin{equation}
-q_e=100\times
-\frac{\sum_{\theta_i\in\Theta_a}\|\nabla_{\theta_i}\mathcal{L}\|_1}
-{\sum_{\theta_j\in\Theta}\|\nabla_{\theta_j}\mathcal{L}\|_1}.
-\end{equation}
-Here, $\Theta_a$ is the parameter set of decoder1 and $\Theta$ contains all student parameters. If $q_e$ falls outside the target interval $[\rho-\delta,\rho+\delta]$, GAD selects the opposite interval boundary as $q^*$ and computes an odds-ratio adjustment:
-\begin{equation}
-r_e=\frac{p^{*}(1-p_e)}{p_e(1-p^{*})},
-\quad p_e=q_e/100,\quad p^{*}=q^{*}/100.
-\end{equation}
-The next base distillation coefficient is
-\begin{equation}
-\lambda_{e+1}=\operatorname{clip}\left(
-\lambda_e\operatorname{clip}(r_e,r_{\min},r_{\max}),
-\lambda_{\min},\lambda_{\max}\right).
-\end{equation}
-The multiplicative adjustment is bounded per epoch and the coefficient is clipped to $[\lambda_{\min},\lambda_{\max}]$ for stability. Training begins with segmentation-only burn-in, follows with a linear distillation warm-up, and activates GAD after warm-up. At inference, the teacher, feature projection head, and GAD update are discarded.
+% \subsection{Direction-Group Graph Selective Scan}
+
+% Let $\mathbf{X}\in\mathbb{R}^{B\times D\times h\times w}$ be the input to DG-GSS. We use four Cross2D traversal directions and partition the inner state-space channels into $M$ groups. With $d=D/M$ and $L=hw$, cross scanning yields
+% \begin{equation}
+% \mathbf{X}_{\mathrm{scan}}\in\mathbb{R}^{B\times K\times M\times d\times L},\qquad K=4.
+% \end{equation}
+% Every direction--group pair independently produces its selective-scan parameters $(\Delta,\mathbf{B},\mathbf{C})$. Selective scan is applied to each pair and the four outputs are spatially realigned to the original coordinate system:
+% \begin{equation}
+% \mathbf{Y}\in\mathbb{R}^{B\times K\times M\times d\times h\times w}.
+% \end{equation}
+
+% The tensor $\mathbf{Y}_{k,m}$ is a response from direction $k$ and channel group $m$. We regard it as a graph node and obtain a node descriptor by global average pooling:
+% \begin{equation}
+% \mathbf{r}_{k,m}=\frac{1}{hw}\sum_{u,v}\mathbf{Y}_{k,m,:,u,v}.
+% \end{equation}
+% After layer normalization and linear projection, additive graph-attention logits~\cite{velickovic2018gat} are
+% \begin{equation}
+% e_{ij}=\operatorname{LeakyReLU}\left(\mathbf{a}_{s}^{\top}\mathbf{h}_i+
+% \mathbf{a}_{t}^{\top}\mathbf{h}_j\right).
+% \end{equation}
+% Our factorized adjacency connects two nodes when they have the same scan direction or the same channel-group identity, including self-connections. Thus, a node receives both cross-group and cross-direction evidence without constructing an unconstrained fully connected graph. With masked softmax weights $a_{ij}$ and shared $1\times1$ value projection $V(\cdot)$, graph propagation is
+% \begin{equation}
+% \widetilde{\mathbf{Y}}_i=\mathbf{Y}_i+\gamma\sum_{j\in\mathcal{N}(i)}a_{ij}V(\mathbf{Y}_j),
+% \end{equation}
+% where $\gamma$ is learnable and initialized to zero. DG-GSS consequently starts from the original grouped scan behavior and learns graph exchange progressively. Finally, groups are concatenated and the four aligned directions are summed before output normalization.
+
+% \subsection{DINOv3 Supervision and Gradient-Adaptive Distillation}
+
+% A frozen DINOv3 ViT-B/16 teacher provides dense features only during training. The feature $\mathbf{F}_s$ after the first decoder block is projected by a $1\times1$ convolution and batch normalization to the teacher dimension. The teacher feature $\mathbf{F}_t$ is bilinearly resized when necessary. After flattening each map into spatial tokens and applying $\ell_2$ normalization, the feature loss is
+% \begin{equation}
+% \mathcal{L}_{\mathrm{dist}}=
+% \frac{1}{N}\sum_{n=1}^{N}\left[1-
+% \frac{\mathbf{f}_{s,n}^{\top}\mathbf{f}_{t,n}}
+% {\|\mathbf{f}_{s,n}\|_2\|\mathbf{f}_{t,n}\|_2}\right].
+% \end{equation}
+% The segmentation objective follows the structure-aware weighted BCE and weighted IoU loss~\cite{fan2020pranet}:
+% \begin{equation}
+% \mathcal{L}=\mathcal{L}_{\mathrm{seg}}+\lambda_e\mathcal{L}_{\mathrm{dist}},
+% \qquad
+% \mathcal{L}_{\mathrm{seg}}=\mathcal{L}_{\mathrm{wbce}}+\mathcal{L}_{\mathrm{wiou}}.
+% \end{equation}
+
+% Using a fixed $\lambda_e$ assumes that the appropriate teacher pressure remains unchanged throughout training. Instead, after backpropagation and before gradient clipping, GAD measures the gradient share of the aligned decoder block:
+% \begin{equation}
+% q_e=100\times
+% \frac{\sum_{\theta_i\in\Theta_a}\|\nabla_{\theta_i}\mathcal{L}\|_1}
+% {\sum_{\theta_j\in\Theta}\|\nabla_{\theta_j}\mathcal{L}\|_1}.
+% \end{equation}
+% Here, $\Theta_a$ is the parameter set of decoder1 and $\Theta$ contains all student parameters. If $q_e$ falls outside the target interval $[\rho-\delta,\rho+\delta]$, GAD selects the opposite interval boundary as $q^*$ and computes an odds-ratio adjustment:
+% \begin{equation}
+% r_e=\frac{p^{*}(1-p_e)}{p_e(1-p^{*})},
+% \quad p_e=q_e/100,\quad p^{*}=q^{*}/100.
+% \end{equation}
+% The next base distillation coefficient is
+% \begin{equation}
+% \lambda_{e+1}=\operatorname{clip}\left(
+% \lambda_e\operatorname{clip}(r_e,r_{\min},r_{\max}),
+% \lambda_{\min},\lambda_{\max}\right).
+% \end{equation}
+% The multiplicative adjustment is bounded per epoch and the coefficient is clipped to $[\lambda_{\min},\lambda_{\max}]$ for stability. Training begins with segmentation-only burn-in, follows with a linear distillation warm-up, and activates GAD after warm-up. At inference, the teacher, feature projection head, and GAD update are discarded.
