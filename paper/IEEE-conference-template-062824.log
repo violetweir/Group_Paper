@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.28)  26 JUN 2026 00:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.28)  26 JUN 2026 00:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -366,11 +366,6 @@ Underfull \vbox (badness 1394) has occurred while \output is active []
 
 
 [4 <./all-network.pdf>]
-Overfull \hbox (115.44777pt too wide) detected at line 90
-[][][]
- []
-
-
 
 )
 
@@ -389,6 +384,9 @@ Underfull \hbox (badness 2150) in paragraph at lines 245--246
 
 
 [5]
+
+
+Underfull \vbox (badness 1237) has occurred while \output is active []
 
 
 
@@ -426,13 +424,13 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  4186 strings out of 473190
  66760 string characters out of 5715800
- 489879 words of memory out of 5000000
+ 488776 words of memory out of 5000000
  27381 multiletter control sequences out of 15000+600000
  602533 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1782b,283s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (7 pages, 388691 bytes).
+Output written on IEEE-conference-template-062824.pdf (7 pages, 388735 bytes).
 PDF statistics:
  245 PDF objects out of 1000 (max. 8388607)
  90 compressed objects within 1 object stream

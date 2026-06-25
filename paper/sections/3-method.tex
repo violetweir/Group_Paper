@@ -83,8 +83,8 @@ In this way, DG-GSS preserves the efficiency of grouped multi-directional select
 After defining DG-GSS, we embed it into a lightweight block and integrate the block into an asymmetric U-shaped segmentation network. As shown in the upper-right part of Fig.~\ref{fig:overall-network}, the DG-GSS block consists of three residual components: a pre-scan local mixing stage, the proposed DG-GSS layer, and a post-scan local refinement stage. Given an input feature $\mathbf{x}$, the block is formulated as
 \begin{equation}
 \begin{aligned}
-\mathbf{u}_1 &= \mathbf{x}+\operatorname{FFN}_0(\operatorname{DW}_0(\mathbf{x})),\
-\mathbf{u}_2 &= \mathbf{u}_1+\operatorname{DG\text{-}GSS}(\mathbf{u}_1),\
+\mathbf{u}_1 &= \mathbf{x}+\operatorname{FFN}_0(\operatorname{DW}_0(\mathbf{x})), \\
+\mathbf{u}_2 &= \mathbf{u}_1+\operatorname{DG\text{-}GSS}(\mathbf{u}_1), \\
 \mathbf{y} &= \mathbf{u}_2+\operatorname{FFN}_1(\operatorname{DW}_1(\mathbf{u}_2)),
 \end{aligned}
 \end{equation}
