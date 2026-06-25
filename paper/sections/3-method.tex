@@ -101,6 +101,90 @@ where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is ReLU, and $\psi$ maps 
 
 
 
+\subsection{Training-Time DINOv3 Supervision with GAD}
+
+Although DG-GSS improves contextual modeling inside the compact student network, training a lightweight segmentation model on limited medical datasets may still lead to insufficient semantic abstraction. Inspired by the DINOv3-based gradient-adaptive distillation strategy in RT-DETRv4~\cite{liao2025rtdetrv4}, we adapt training-time foundation-model supervision to lightweight medical image segmentation. A frozen DINOv3 ViT-B/16 model~\cite{simeoni2025dinov3} is used as the semantic teacher only during training, and the teacher branch is removed during inference.
+
+As described in the previous subsection, the student feature used for distillation is extracted after the first decoder block and before the first upsampling operation. This feature is semantically rich, spatially compact, and computationally inexpensive for feature alignment. Let $\mathbf{F}_{s}$ denote the projected student feature, and let $\mathbf{F}_{t}$ denote the corresponding DINOv3 teacher feature. The student feature is projected to the teacher dimension by a $1\times1$ convolution followed by batch normalization when their channel dimensions are different. If necessary, the teacher feature is bilinearly resized to match the spatial resolution of $\mathbf{F}_{s}$.
+
+After spatial alignment, both feature maps are flattened into $N$ spatial tokens and $\ell_2$-normalized along the channel dimension. We use a cosine feature distillation loss:
+\begin{equation}
+\mathcal{L}_{\mathrm{dist}}
+=
+\frac{1}{N}\sum_{n=1}^{N}
+\left[
+1-
+\frac{
+\mathbf{f}_{s,n}^{\top}\mathbf{f}_{t,n}
+}{
+\left\|\mathbf{f}_{s,n}\right\|_2
+\left\|\mathbf{f}_{t,n}\right\|_2
++\epsilon
+}
+\right],
+\end{equation}
+where $\mathbf{f}_{s,n}$ and $\mathbf{f}_{t,n}$ denote the $n$-th student and teacher tokens, respectively, and $\epsilon$ is a small constant for numerical stability.
+
+The segmentation objective follows the structure-aware weighted BCE and weighted IoU loss~\cite{fan2020pranet}:
+\begin{equation}
+\mathcal{L}_{\mathrm{seg}}
+=
+\mathcal{L}_{\mathrm{wbce}}
++
+\mathcal{L}_{\mathrm{wiou}}.
+\end{equation}
+The overall training objective is
+\begin{equation}
+\mathcal{L}
+=
+\mathcal{L}_{\mathrm{seg}}
++
+\lambda_e\mathcal{L}_{\mathrm{dist}},
+\end{equation}
+where $\lambda_e$ is the distillation coefficient at epoch $e$.
+
+Using a fixed distillation coefficient assumes that the proper teacher supervision strength remains unchanged throughout training. However, the optimization state of the student changes over time, and the gradient contribution of the teacher-supervised decoder block may become either too weak or too dominant. To balance semantic supervision and the primary segmentation objective, GAD dynamically updates $\lambda_e$ according to the gradient share of the aligned decoder block. After back-propagation and before gradient clipping, we compute
+\begin{equation}
+q_e
+=
+100\times
+\frac{
+\sum_{\theta_i\in\Theta_a}
+\left\|\nabla_{\theta_i}\mathcal{L}\right\|_1
+}{
+\sum_{\theta_j\in\Theta}
+\left\|\nabla_{\theta_j}\mathcal{L}\right\|_1
++\epsilon
+},
+\end{equation}
+where $\Theta_a$ denotes the parameters of the aligned decoder block and $\Theta$ denotes all trainable student parameters.
+
+Given a target gradient-share interval $[\rho-\delta,\rho+\delta]$, GAD adjusts the next-epoch distillation coefficient only when $q_e$ falls outside this interval. Let $q^{*}$ be the nearest target boundary, and define $p_e=q_e/100$ and $p^{*}=q^{*}/100$. The odds-ratio adjustment is computed as
+\begin{equation}
+r_e
+=
+\frac{
+p^{*}(1-p_e)
+}{
+p_e(1-p^{*})+\epsilon
+}.
+\end{equation}
+The distillation coefficient for the next epoch is updated by
+\begin{equation}
+\lambda_{e+1}
+=
+\operatorname{clip}
+\left(
+\lambda_e
+\operatorname{clip}(r_e,r_{\min},r_{\max}),
+\lambda_{\min},
+\lambda_{\max}
+\right),
+\end{equation}
+where $r_{\min}$ and $r_{\max}$ bound the per-epoch adjustment, and $\lambda_{\min}$ and $\lambda_{\max}$ constrain the overall distillation strength.
+
+Training begins with a segmentation-only burn-in stage, followed by a linear distillation warm-up. GAD is activated after warm-up to adaptively regulate the teacher contribution. During inference, the DINOv3 teacher, the feature projection head, and the GAD update are all discarded. Therefore, the proposed training-time supervision improves the compact student without increasing deployment cost.
+
 
 % \section{Methodology}
 

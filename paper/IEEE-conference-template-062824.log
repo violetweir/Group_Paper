@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.28)  26 JUN 2026 00:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.28)  26 JUN 2026 00:47
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -367,9 +367,22 @@ Underfull \vbox (badness 1394) has occurred while \output is active []
 
 [4 <./all-network.pdf>]
 
-)
 
-LaTeX Warning: Reference `fig:colondb-efficiency' on page 5 undefined on input line 245.
+Underfull \hbox (badness 1460) in paragraph at lines 106--107
+\OT1/ptm/m/n/10 training-time foundation-model su-per-vi-sion to lightweight
+ []
+
+
+Underfull \hbox (badness 1389) in paragraph at lines 146--147
+\OT1/ptm/m/n/10 train-ing. How-ever, the op-ti-miza-tion state of the stu-dent
+ []
+
+
+
+[5])
+
+
+LaTeX Warning: Reference `fig:colondb-efficiency' on page 6 undefined on input line 245.
 
 
 Underfull \hbox (badness 2495) in paragraph at lines 245--246
@@ -383,21 +396,16 @@ Underfull \hbox (badness 2150) in paragraph at lines 245--246
 
 
 
-[5]
+[6]
 
-
-Underfull \vbox (badness 1237) has occurred while \output is active []
-
-
-
-[6] (./IEEE-conference-template-062824.bbl
+(./IEEE-conference-template-062824.bbl
 Underfull \hbox (badness 5504) in paragraph at lines 48--49
 []\OT1/ptm/m/n/8 M. M. Rah-man and R. Mar-culescu, ``MK-UNet: Multi-kernel
  []
 
 
 
-)
+[7])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -411,7 +419,11 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[7] (./IEEE-conference-template-062824.aux)
+
+
+[8
+
+] (./IEEE-conference-template-062824.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -424,16 +436,16 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  4186 strings out of 473190
  66760 string characters out of 5715800
- 488776 words of memory out of 5000000
+ 493647 words of memory out of 5000000
  27381 multiletter control sequences out of 15000+600000
  602533 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1782b,283s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (7 pages, 388735 bytes).
+Output written on IEEE-conference-template-062824.pdf (8 pages, 401114 bytes).
 PDF statistics:
- 245 PDF objects out of 1000 (max. 8388607)
- 90 compressed objects within 1 object stream
+ 248 PDF objects out of 1000 (max. 8388607)
+ 92 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
