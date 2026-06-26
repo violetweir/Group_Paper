@@ -34,151 +34,151 @@ To address this limitation, we propose GAD-MambaUNet, an asymmetric local--globa
 medical image segmentation, lightweight networks, state-space models, DINOv3, knowledge distillation
 \end{IEEEkeywords}
 
-\iffalse
-\section{Introduction}
+% \iffalse
+% \section{Introduction}
 
-Accurate medical image segmentation is essential for computer-aided diagnosis, treatment planning, and quantitative disease assessment. In practical settings, a useful segmentation model must delineate subtle lesions and tumors while remaining small enough for point-of-care, mobile, or edge deployment. This objective is difficult because medical targets often occupy only a small image region, exhibit weak or irregular boundaries, and appear under modality-specific artifacts. Dermoscopy, ultrasound, and colonoscopy all present different visual degradations, but they share the same core requirement: the model must preserve local boundary evidence while exploiting broader context to resolve ambiguous foreground-background appearance.
+% Accurate medical image segmentation is essential for computer-aided diagnosis, treatment planning, and quantitative disease assessment. In practical settings, a useful segmentation model must delineate subtle lesions and tumors while remaining small enough for point-of-care, mobile, or edge deployment. This objective is difficult because medical targets often occupy only a small image region, exhibit weak or irregular boundaries, and appear under modality-specific artifacts. Dermoscopy, ultrasound, and colonoscopy all present different visual degradations, but they share the same core requirement: the model must preserve local boundary evidence while exploiting broader context to resolve ambiguous foreground-background appearance.
 
-U-Net~\cite{ronneberger2015unet} and its variants established the encoder--decoder paradigm for medical segmentation by combining deep semantic features with high-resolution skip connections. Polyp-specific and attention-based networks such as PraNet~\cite{fan2020pranet} and UACANet~\cite{kim2021uacanet} improve boundary refinement and ambiguity handling, while Transformer-based models such as TransUNet~\cite{chen2021transunet} introduce stronger global context. However, many of these methods increase parameters, memory, or computation, which is undesirable for lightweight clinical deployment.
+% U-Net~\cite{ronneberger2015unet} and its variants established the encoder--decoder paradigm for medical segmentation by combining deep semantic features with high-resolution skip connections. Polyp-specific and attention-based networks such as PraNet~\cite{fan2020pranet} and UACANet~\cite{kim2021uacanet} improve boundary refinement and ambiguity handling, while Transformer-based models such as TransUNet~\cite{chen2021transunet} introduce stronger global context. However, many of these methods increase parameters, memory, or computation, which is undesirable for lightweight clinical deployment.
 
-Recent lightweight models reduce this burden through depth-wise convolutions, compact channel schedules, grouped attention, and inexpensive token mixing. UNeXt~\cite{valanarasu2022unext}, CMUNeXt~\cite{tang2024cmunext}, EGE-UNet~\cite{ruan2023egeunet}, EMCAD~\cite{rahman2024emcad}, and MK-UNet~\cite{rahman2025mkunet} demonstrate that careful operator design can achieve strong segmentation performance with reduced complexity. A common strength of these models is their local inductive bias: they are effective at capturing texture, boundary, and multi-scale appearance cues. The remaining challenge is to add global contextual reasoning without losing the computational and boundary-preserving advantages that make lightweight models attractive.
+% Recent lightweight models reduce this burden through depth-wise convolutions, compact channel schedules, grouped attention, and inexpensive token mixing. UNeXt~\cite{valanarasu2022unext}, CMUNeXt~\cite{tang2024cmunext}, EGE-UNet~\cite{ruan2023egeunet}, EMCAD~\cite{rahman2024emcad}, and MK-UNet~\cite{rahman2025mkunet} demonstrate that careful operator design can achieve strong segmentation performance with reduced complexity. A common strength of these models is their local inductive bias: they are effective at capturing texture, boundary, and multi-scale appearance cues. The remaining challenge is to add global contextual reasoning without losing the computational and boundary-preserving advantages that make lightweight models attractive.
 
-Selective state-space models provide a promising alternative for efficient global modeling. Mamba~\cite{gu2023mamba} introduces input-dependent sequence modeling with linear complexity, and VMamba~\cite{liu2024vmamba} extends selective scanning to two-dimensional vision features. UltraLight VM-UNet~\cite{wu2024ultralight} further shows the potential of parallel Vision Mamba branches for lightweight medical segmentation. However, simply splitting channels into groups and scanning in multiple directions can fragment complementary responses before fusion if direction and group interactions are not explicitly modeled. This is undesirable for medical images, where a weak boundary may need to be interpreted using both local texture and distant contextual cues.
+% Selective state-space models provide a promising alternative for efficient global modeling. Mamba~\cite{gu2023mamba} introduces input-dependent sequence modeling with linear complexity, and VMamba~\cite{liu2024vmamba} extends selective scanning to two-dimensional vision features. UltraLight VM-UNet~\cite{wu2024ultralight} further shows the potential of parallel Vision Mamba branches for lightweight medical segmentation. However, simply splitting channels into groups and scanning in multiple directions can fragment complementary responses before fusion if direction and group interactions are not explicitly modeled. This is undesirable for medical images, where a weak boundary may need to be interpreted using both local texture and distant contextual cues.
 
-Large self-supervised vision models provide another way to improve semantic consistency. DINOv3~\cite{simeoni2025dinov3} produces dense representations that can guide compact students. Yet a fixed knowledge distillation coefficient~\cite{hinton2015distilling} is brittle for a small segmentation model: too much teacher pressure early may interfere with mask learning, while too little teacher guidance later may fail to transfer global semantics. This motivates a training strategy that adjusts the teacher contribution according to the student optimization state.
+% Large self-supervised vision models provide another way to improve semantic consistency. DINOv3~\cite{simeoni2025dinov3} produces dense representations that can guide compact students. Yet a fixed knowledge distillation coefficient~\cite{hinton2015distilling} is brittle for a small segmentation model: too much teacher pressure early may interfere with mask learning, while too little teacher guidance later may fail to transfer global semantics. This motivates a training strategy that adjusts the teacher contribution according to the student optimization state.
 
-We propose \emph{GAD-MambaUNet}, a lightweight segmentation framework organized around local-detail preservation, efficient global interaction, and stable semantic transfer. First, the network keeps multi-kernel convolutional processing at high-resolution stages and uses grouped state-space blocks only in deeper stages, where global context is cheaper to model. Second, we propose Direction-Group Graph Selective Scan (DG-GSS), which represents each scanning-direction and channel-group pair as a graph node and learns content-dependent interactions before directional fusion. Third, we distill dense DINOv3 features at the deepest decoder stage and regulate the distillation strength with Gradient-Adaptive Distillation (GAD), which monitors the gradient share of the aligned decoder block.
+% We propose \emph{GAD-MambaUNet}, a lightweight segmentation framework organized around local-detail preservation, efficient global interaction, and stable semantic transfer. First, the network keeps multi-kernel convolutional processing at high-resolution stages and uses grouped state-space blocks only in deeper stages, where global context is cheaper to model. Second, we propose Direction-Group Graph Selective Scan (DG-GSS), which represents each scanning-direction and channel-group pair as a graph node and learns content-dependent interactions before directional fusion. Third, we distill dense DINOv3 features at the deepest decoder stage and regulate the distillation strength with Gradient-Adaptive Distillation (GAD), which monitors the gradient share of the aligned decoder block.
 
-Our contributions are summarized as follows:
-\begin{itemize}
-    \item We develop a lightweight architecture for multi-source binary medical segmentation that targets boundary-sensitive lesions and tumors across different imaging modalities.
-    \item We introduce an asymmetric local--global design that preserves high-resolution multi-kernel convolution while using grouped visual state-space modeling at deep semantic stages.
-    \item We propose DG-GSS to explicitly exchange information among scanning directions and channel groups before state-space directional fusion.
-    \item We introduce Gradient-Adaptive DINOv3 Distillation, which transfers foundation-model semantics during training without adding teacher-side inference cost.
-\end{itemize}
+% Our contributions are summarized as follows:
+% \begin{itemize}
+%     \item We develop a lightweight architecture for multi-source binary medical segmentation that targets boundary-sensitive lesions and tumors across different imaging modalities.
+%     \item We introduce an asymmetric local--global design that preserves high-resolution multi-kernel convolution while using grouped visual state-space modeling at deep semantic stages.
+%     \item We propose DG-GSS to explicitly exchange information among scanning directions and channel groups before state-space directional fusion.
+%     \item We introduce Gradient-Adaptive DINOv3 Distillation, which transfers foundation-model semantics during training without adding teacher-side inference cost.
+% \end{itemize}
 
-\section{Related Work}
+% \section{Related Work}
 
-\subsection{Medical Image Segmentation Networks}
+% \subsection{Medical Image Segmentation Networks}
 
-Binary medical image segmentation covers diverse imaging modalities and clinical targets. Dermoscopic skin lesion segmentation, breast ultrasound tumor segmentation, and colonoscopic polyp segmentation all require accurate foreground delineation, but they expose different visual challenges such as irregular lesion shapes, speckle noise, low-contrast tumor boundaries, mucosal texture similarity, illumination artifacts, and cross-source variation. Public benchmarks including ISIC2018~\cite{codella2019skin}, BUSI~\cite{al2020dataset}, CVC-ClinicDB~\cite{bernal2015clinicdb}, and CVC-ColonDB~\cite{vazquez2017benchmark} are therefore useful for evaluating whether a lightweight model is merely specialized or broadly robust.
+% Binary medical image segmentation covers diverse imaging modalities and clinical targets. Dermoscopic skin lesion segmentation, breast ultrasound tumor segmentation, and colonoscopic polyp segmentation all require accurate foreground delineation, but they expose different visual challenges such as irregular lesion shapes, speckle noise, low-contrast tumor boundaries, mucosal texture similarity, illumination artifacts, and cross-source variation. Public benchmarks including ISIC2018~\cite{codella2019skin}, BUSI~\cite{al2020dataset}, CVC-ClinicDB~\cite{bernal2015clinicdb}, and CVC-ColonDB~\cite{vazquez2017benchmark} are therefore useful for evaluating whether a lightweight model is merely specialized or broadly robust.
 
-U-Net~\cite{ronneberger2015unet} remains a foundational architecture because its skip connections combine local detail with semantic context. Later CNN and attention variants improve this design through nested skips, attention gates, reverse attention, uncertainty modeling, and multi-scale decoding. PraNet~\cite{fan2020pranet} is a representative polyp segmentation network using parallel partial decoding and reverse attention, while UACANet~\cite{kim2021uacanet} uses uncertainty-augmented context attention. TransUNet~\cite{chen2021transunet} and related Transformer models strengthen global modeling but often depend on heavier token interaction or pretrained backbones.
+% U-Net~\cite{ronneberger2015unet} remains a foundational architecture because its skip connections combine local detail with semantic context. Later CNN and attention variants improve this design through nested skips, attention gates, reverse attention, uncertainty modeling, and multi-scale decoding. PraNet~\cite{fan2020pranet} is a representative polyp segmentation network using parallel partial decoding and reverse attention, while UACANet~\cite{kim2021uacanet} uses uncertainty-augmented context attention. TransUNet~\cite{chen2021transunet} and related Transformer models strengthen global modeling but often depend on heavier token interaction or pretrained backbones.
 
-\subsection{Lightweight Segmentation}
+% \subsection{Lightweight Segmentation}
 
-Lightweight medical segmentation models aim to balance segmentation accuracy with small parameter count and low computation. UNeXt~\cite{valanarasu2022unext} combines convolutional encoders with shifted MLP blocks, CMUNeXt~\cite{tang2024cmunext} uses large kernels and skip fusion, EGE-UNet~\cite{ruan2023egeunet} develops group-enhanced attention, and EMCAD~\cite{rahman2024emcad} introduces an efficient multi-scale convolutional attention decoder.
+% Lightweight medical segmentation models aim to balance segmentation accuracy with small parameter count and low computation. UNeXt~\cite{valanarasu2022unext} combines convolutional encoders with shifted MLP blocks, CMUNeXt~\cite{tang2024cmunext} uses large kernels and skip fusion, EGE-UNet~\cite{ruan2023egeunet} develops group-enhanced attention, and EMCAD~\cite{rahman2024emcad} introduces an efficient multi-scale convolutional attention decoder.
 
-Among these methods, MK-UNet~\cite{rahman2025mkunet} is a representative multi-kernel lightweight design. Its Multi-Kernel Inverted Residual (MKIR) block applies parallel depth-wise kernels, channel shuffle, and point-wise projection to capture local patterns at several receptive-field scales with a compact footprint. Its decoder further uses channel attention, spatial attention, and grouped attention gates. These components are well suited to boundary-sensitive medical segmentation, so our design preserves the same local modeling spirit. The difference is that we do not rely on local operators alone: deep low-resolution stages are assigned to grouped state-space modeling and training-time semantic distillation.
+% Among these methods, MK-UNet~\cite{rahman2025mkunet} is a representative multi-kernel lightweight design. Its Multi-Kernel Inverted Residual (MKIR) block applies parallel depth-wise kernels, channel shuffle, and point-wise projection to capture local patterns at several receptive-field scales with a compact footprint. Its decoder further uses channel attention, spatial attention, and grouped attention gates. These components are well suited to boundary-sensitive medical segmentation, so our design preserves the same local modeling spirit. The difference is that we do not rely on local operators alone: deep low-resolution stages are assigned to grouped state-space modeling and training-time semantic distillation.
 
-\subsection{Visual State-Space Models}
+% \subsection{Visual State-Space Models}
 
-State-space models have recently become an efficient alternative to self-attention for long-range dependency modeling. Mamba~\cite{gu2023mamba} uses selective input-dependent state transitions with linear complexity. VMamba~\cite{liu2024vmamba} adapts selective scanning to visual features through multiple two-dimensional traversal directions. UltraLight VM-UNet~\cite{wu2024ultralight} shows that channel-wise parallel Vision Mamba branches can substantially reduce model size for medical segmentation.
+% State-space models have recently become an efficient alternative to self-attention for long-range dependency modeling. Mamba~\cite{gu2023mamba} uses selective input-dependent state transitions with linear complexity. VMamba~\cite{liu2024vmamba} adapts selective scanning to visual features through multiple two-dimensional traversal directions. UltraLight VM-UNet~\cite{wu2024ultralight} shows that channel-wise parallel Vision Mamba branches can substantially reduce model size for medical segmentation.
 
-However, efficient grouping introduces a representation-isolation problem. Directional scans encode complementary spatial contexts, and channel groups encode different feature subspaces, but conventional fusion often merges them without adaptive interaction. Our DG-GSS module explicitly constructs a factorized graph over direction--group nodes. Nodes communicate when they share either a scanning direction or a channel-group identity, enabling structured information exchange while preserving the efficiency of grouped selective scans.
+% However, efficient grouping introduces a representation-isolation problem. Directional scans encode complementary spatial contexts, and channel groups encode different feature subspaces, but conventional fusion often merges them without adaptive interaction. Our DG-GSS module explicitly constructs a factorized graph over direction--group nodes. Nodes communicate when they share either a scanning direction or a channel-group identity, enabling structured information exchange while preserving the efficiency of grouped selective scans.
 
-\subsection{Foundation-Model Distillation}
+% \subsection{Foundation-Model Distillation}
 
-Knowledge distillation transfers information from a high-capacity teacher to a compact student~\cite{hinton2015distilling}. Dense feature distillation is especially useful for segmentation because it provides spatial supervision beyond output logits. DINOv3~\cite{simeoni2025dinov3} offers strong dense self-supervised representations and can serve as a training-time teacher for heterogeneous medical images.
+% Knowledge distillation transfers information from a high-capacity teacher to a compact student~\cite{hinton2015distilling}. Dense feature distillation is especially useful for segmentation because it provides spatial supervision beyond output logits. DINOv3~\cite{simeoni2025dinov3} offers strong dense self-supervised representations and can serve as a training-time teacher for heterogeneous medical images.
 
-Most distillation methods use a fixed loss coefficient. In lightweight medical segmentation, this can be suboptimal because the student first needs to learn task-specific masks and only later can reliably absorb stronger semantic guidance. We therefore use a staged schedule: segmentation-only burn-in, linear distillation warm-up, and gradient-adaptive coefficient control. The teacher is removed at inference, keeping deployment cost determined solely by the compact student.
-
-
-\begin{figure*}[t]
-    \centering
-    \includegraphics[width=\textwidth]{all-network.pdf}
-    \caption{Overall architecture of GAD-MambaUNet. The student uses multi-kernel convolutional processing at high-resolution stages and introduces DG-GSS blocks at deep semantic stages. During training, a frozen DINOv3 teacher provides dense feature supervision at the first decoder block, while GAD regulates the distillation coefficient according to the aligned block's gradient share. The teacher and projection head are removed during inference.}
-    \label{fig:overall-network}
-\end{figure*}
+% Most distillation methods use a fixed loss coefficient. In lightweight medical segmentation, this can be suboptimal because the student first needs to learn task-specific masks and only later can reliably absorb stronger semantic guidance. We therefore use a staged schedule: segmentation-only burn-in, linear distillation warm-up, and gradient-adaptive coefficient control. The teacher is removed at inference, keeping deployment cost determined solely by the compact student.
 
 
-\section{Methodology}
+% \begin{figure*}[t]
+%     \centering
+%     \includegraphics[width=\textwidth]{all-network.pdf}
+%     \caption{Overall architecture of GAD-MambaUNet. The student uses multi-kernel convolutional processing at high-resolution stages and introduces DG-GSS blocks at deep semantic stages. During training, a frozen DINOv3 teacher provides dense feature supervision at the first decoder block, while GAD regulates the distillation coefficient according to the aligned block's gradient share. The teacher and projection head are removed during inference.}
+%     \label{fig:overall-network}
+% \end{figure*}
+
+
+% \section{Methodology}
 
 
 
-\subsection{Overview}
+% \subsection{Overview}
 
-As illustrated in Fig.~\ref{fig:overall-network}, given an input medical image $\mathbf{x}\in\mathbb{R}^{3\times H\times W}$, the student predicts a binary segmentation logit map $\mathbf{z}\in\mathbb{R}^{1\times H\times W}$. The base configuration uses a compact five-level U-shaped hierarchy with channel dimensions $[16,32,64,96,160]$. The first three encoder stages and the last three decoder stages use Multi-Kernel Inverted Residual blocks to retain local texture and boundary cues. The two deepest encoder stages and the first two decoder stages use grouped state-space blocks for efficient context modeling. Depth-wise separable downsampling and point-wise projection handle resolution and channel transitions outside the state-space blocks, and grouped attention gates refine skip fusion.
+% As illustrated in Fig.~\ref{fig:overall-network}, given an input medical image $\mathbf{x}\in\mathbb{R}^{3\times H\times W}$, the student predicts a binary segmentation logit map $\mathbf{z}\in\mathbb{R}^{1\times H\times W}$. The base configuration uses a compact five-level U-shaped hierarchy with channel dimensions $[16,32,64,96,160]$. The first three encoder stages and the last three decoder stages use Multi-Kernel Inverted Residual blocks to retain local texture and boundary cues. The two deepest encoder stages and the first two decoder stages use grouped state-space blocks for efficient context modeling. Depth-wise separable downsampling and point-wise projection handle resolution and channel transitions outside the state-space blocks, and grouped attention gates refine skip fusion.
 
-Training combines a structure-aware segmentation objective with dense feature alignment from a frozen DINOv3 teacher. The aligned student feature is taken after the first decoder block and before upsampling, at approximately $H/32\times W/32$. This point is semantically strong, computationally cheap, and directly associated with the deep decoder block monitored by GAD.
+% Training combines a structure-aware segmentation objective with dense feature alignment from a frozen DINOv3 teacher. The aligned student feature is taken after the first decoder block and before upsampling, at approximately $H/32\times W/32$. This point is semantically strong, computationally cheap, and directly associated with the deep decoder block monitored by GAD.
 
-\subsection{Asymmetric Local--Global Student}
+% \subsection{Asymmetric Local--Global Student}
 
-For high-resolution stages, we use a multi-kernel inverted residual block. A block expands channels with a $1\times1$ convolution, applies parallel depth-wise convolutions with kernel sizes $\{1,3,5\}$, sums their outputs, shuffles channels, and projects them back to the target dimension. The multi-kernel design captures small lesion edges, ultrasound texture variations, and polyp boundary patterns at low computational cost.
+% For high-resolution stages, we use a multi-kernel inverted residual block. A block expands channels with a $1\times1$ convolution, applies parallel depth-wise convolutions with kernel sizes $\{1,3,5\}$, sums their outputs, shuffles channels, and projects them back to the target dimension. The multi-kernel design captures small lesion edges, ultrasound texture variations, and polyp boundary patterns at low computational cost.
 
-At low-resolution stages, each Grouped Mamba block applies depth-wise local mixing, a grouped feed-forward network, the DG-GSS operator, and a second local feed-forward refinement. Residual paths surround these components. Channel expansion and reduction are kept outside the state-space operator and handled by downsampling or upsampling modules, which keeps the selective scan dimension fixed inside each block.
+% At low-resolution stages, each Grouped Mamba block applies depth-wise local mixing, a grouped feed-forward network, the DG-GSS operator, and a second local feed-forward refinement. Residual paths surround these components. Channel expansion and reduction are kept outside the state-space operator and handled by downsampling or upsampling modules, which keeps the selective scan dimension fixed inside each block.
 
-Before skip fusion, a grouped attention gate modulates encoder features using the current decoder feature. Let $\mathbf{g}$ be an upsampled decoder feature and $\mathbf{s}$ be the same-resolution encoder feature. The gate computes
-\begin{equation}
-\boldsymbol{\alpha}=\sigma\!\left(\psi\left(\phi(W_g\mathbf{g}+W_s\mathbf{s})\right)\right),
-\end{equation}
-where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is a nonlinear activation, and $\psi$ maps the response to a spatial attention map. The gated skip feature $\hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s}$ is added to the decoder feature.
+% Before skip fusion, a grouped attention gate modulates encoder features using the current decoder feature. Let $\mathbf{g}$ be an upsampled decoder feature and $\mathbf{s}$ be the same-resolution encoder feature. The gate computes
+% \begin{equation}
+% \boldsymbol{\alpha}=\sigma\!\left(\psi\left(\phi(W_g\mathbf{g}+W_s\mathbf{s})\right)\right),
+% \end{equation}
+% where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is a nonlinear activation, and $\psi$ maps the response to a spatial attention map. The gated skip feature $\hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s}$ is added to the decoder feature.
 
-\subsection{Direction-Group Graph Selective Scan}
+% \subsection{Direction-Group Graph Selective Scan}
 
-Let $\mathbf{X}\in\mathbb{R}^{B\times D\times h\times w}$ denote a deep feature map. DG-GSS uses $K=4$ scanning directions and partitions the $D$ channels into $M$ groups of width $d=D/M$. Cross scanning produces
-\begin{equation}
-\mathbf{X}_{\mathrm{scan}}\in\mathbb{R}^{B\times K\times M\times d\times L},
-\qquad L=hw.
-\end{equation}
-Each direction--group pair generates its own selective-scan parameters $(\Delta,\mathbf{B},\mathbf{C})$. After selective scanning, the outputs are spatially aligned to the original image coordinates and reshaped as
-\begin{equation}
-\mathbf{Y}\in\mathbb{R}^{B\times K\times M\times d\times h\times w}.
-\end{equation}
+% Let $\mathbf{X}\in\mathbb{R}^{B\times D\times h\times w}$ denote a deep feature map. DG-GSS uses $K=4$ scanning directions and partitions the $D$ channels into $M$ groups of width $d=D/M$. Cross scanning produces
+% \begin{equation}
+% \mathbf{X}_{\mathrm{scan}}\in\mathbb{R}^{B\times K\times M\times d\times L},
+% \qquad L=hw.
+% \end{equation}
+% Each direction--group pair generates its own selective-scan parameters $(\Delta,\mathbf{B},\mathbf{C})$. After selective scanning, the outputs are spatially aligned to the original image coordinates and reshaped as
+% \begin{equation}
+% \mathbf{Y}\in\mathbb{R}^{B\times K\times M\times d\times h\times w}.
+% \end{equation}
 
-Each pair $(k,m)$ is treated as a graph node. A node descriptor is obtained by global average pooling:
-\begin{equation}
-\mathbf{r}_{k,m}=\frac{1}{hw}\sum_{u,v}\mathbf{Y}_{k,m,:,u,v}.
-\end{equation}
-After layer normalization and projection, additive graph-attention logits are computed as
-\begin{equation}
-e_{ij}=\operatorname{LeakyReLU}\left(\mathbf{a}_{s}^{\top}\mathbf{h}_i+
-\mathbf{a}_{t}^{\top}\mathbf{h}_j\right).
-\end{equation}
-The factorized graph connects nodes that share either a scanning direction or a channel-group identity. With masked softmax coefficients $a_{ij}$ and a shared $1\times1$ value projection $V(\cdot)$, graph propagation is
-\begin{equation}
-\widetilde{\mathbf{Y}}_i=\mathbf{Y}_i+\gamma\sum_{j\in\mathcal{N}(i)}a_{ij}V(\mathbf{Y}_j),
-\end{equation}
-where $\gamma$ is learnable and initialized to zero. The final output concatenates channel groups and sums the aligned directional responses.
+% Each pair $(k,m)$ is treated as a graph node. A node descriptor is obtained by global average pooling:
+% \begin{equation}
+% \mathbf{r}_{k,m}=\frac{1}{hw}\sum_{u,v}\mathbf{Y}_{k,m,:,u,v}.
+% \end{equation}
+% After layer normalization and projection, additive graph-attention logits are computed as
+% \begin{equation}
+% e_{ij}=\operatorname{LeakyReLU}\left(\mathbf{a}_{s}^{\top}\mathbf{h}_i+
+% \mathbf{a}_{t}^{\top}\mathbf{h}_j\right).
+% \end{equation}
+% The factorized graph connects nodes that share either a scanning direction or a channel-group identity. With masked softmax coefficients $a_{ij}$ and a shared $1\times1$ value projection $V(\cdot)$, graph propagation is
+% \begin{equation}
+% \widetilde{\mathbf{Y}}_i=\mathbf{Y}_i+\gamma\sum_{j\in\mathcal{N}(i)}a_{ij}V(\mathbf{Y}_j),
+% \end{equation}
+% where $\gamma$ is learnable and initialized to zero. The final output concatenates channel groups and sums the aligned directional responses.
 
-\subsection{DINOv3 Feature Distillation}
+% \subsection{DINOv3 Feature Distillation}
 
-A frozen DINOv3 ViT-B/16 teacher provides dense semantic features during training. The student feature $\mathbf{F}_s$ from the first decoder block is projected to the teacher dimension by a $1\times1$ convolution and batch normalization. The teacher feature $\mathbf{F}_t$ is resized if necessary. Both features are flattened into spatial tokens and $\ell_2$ normalized. The distillation loss is
-\begin{equation}
-\mathcal{L}_{\mathrm{dist}}=
-\frac{1}{N}\sum_{n=1}^{N}\left[1-
-\frac{\mathbf{f}_{s,n}^{\top}\mathbf{f}_{t,n}}
-{\|\mathbf{f}_{s,n}\|_2\|\mathbf{f}_{t,n}\|_2}\right].
-\end{equation}
-The segmentation term follows a structure-aware objective commonly used in boundary-sensitive medical segmentation~\cite{fan2020pranet}:
-\begin{equation}
-\mathcal{L}=\mathcal{L}_{\mathrm{seg}}+\lambda_e\mathcal{L}_{\mathrm{dist}},
-\qquad
-\mathcal{L}_{\mathrm{seg}}=\mathcal{L}_{\mathrm{wbce}}+\mathcal{L}_{\mathrm{wiou}}.
-\end{equation}
+% A frozen DINOv3 ViT-B/16 teacher provides dense semantic features during training. The student feature $\mathbf{F}_s$ from the first decoder block is projected to the teacher dimension by a $1\times1$ convolution and batch normalization. The teacher feature $\mathbf{F}_t$ is resized if necessary. Both features are flattened into spatial tokens and $\ell_2$ normalized. The distillation loss is
+% \begin{equation}
+% \mathcal{L}_{\mathrm{dist}}=
+% \frac{1}{N}\sum_{n=1}^{N}\left[1-
+% \frac{\mathbf{f}_{s,n}^{\top}\mathbf{f}_{t,n}}
+% {\|\mathbf{f}_{s,n}\|_2\|\mathbf{f}_{t,n}\|_2}\right].
+% \end{equation}
+% The segmentation term follows a structure-aware objective commonly used in boundary-sensitive medical segmentation~\cite{fan2020pranet}:
+% \begin{equation}
+% \mathcal{L}=\mathcal{L}_{\mathrm{seg}}+\lambda_e\mathcal{L}_{\mathrm{dist}},
+% \qquad
+% \mathcal{L}_{\mathrm{seg}}=\mathcal{L}_{\mathrm{wbce}}+\mathcal{L}_{\mathrm{wiou}}.
+% \end{equation}
 
-\subsection{Gradient-Adaptive Distillation}
+% \subsection{Gradient-Adaptive Distillation}
 
-After backpropagation and before gradient clipping, GAD computes the gradient share of the aligned decoder stage:
-\begin{equation}
-q_e=100\times
-\frac{\sum_{\theta_i\in\Theta_a}\|\nabla_{\theta_i}\mathcal{L}\|_1}
-{\sum_{\theta_j\in\Theta}\|\nabla_{\theta_j}\mathcal{L}\|_1}.
-\end{equation}
-Here, $\Theta_a$ denotes parameters of the aligned decoder block and $\Theta$ denotes all trainable student parameters. If $q_e$ lies outside the desired interval $[\rho-\delta,\rho+\delta]$, a target share $q^{*}$ is selected at the opposite interval boundary and an odds-ratio update is computed:
-\begin{equation}
-r_e=\frac{p^{*}(1-p_e)}{p_e(1-p^{*})},
-\quad p_e=q_e/100,\quad p^{*}=q^{*}/100.
-\end{equation}
-The next base distillation coefficient is
-\begin{equation}
-\lambda_{e+1}=\operatorname{clip}\left(
-\lambda_e\operatorname{clip}(r_e,r_{\min},r_{\max}),
-\lambda_{\min},\lambda_{\max}\right).
-\end{equation}
-Training starts with segmentation-only burn-in, then linearly warms up distillation, and finally activates GAD. During inference, DINOv3 and the projection head are discarded.
+% After backpropagation and before gradient clipping, GAD computes the gradient share of the aligned decoder stage:
+% \begin{equation}
+% q_e=100\times
+% \frac{\sum_{\theta_i\in\Theta_a}\|\nabla_{\theta_i}\mathcal{L}\|_1}
+% {\sum_{\theta_j\in\Theta}\|\nabla_{\theta_j}\mathcal{L}\|_1}.
+% \end{equation}
+% Here, $\Theta_a$ denotes parameters of the aligned decoder block and $\Theta$ denotes all trainable student parameters. If $q_e$ lies outside the desired interval $[\rho-\delta,\rho+\delta]$, a target share $q^{*}$ is selected at the opposite interval boundary and an odds-ratio update is computed:
+% \begin{equation}
+% r_e=\frac{p^{*}(1-p_e)}{p_e(1-p^{*})},
+% \quad p_e=q_e/100,\quad p^{*}=q^{*}/100.
+% \end{equation}
+% The next base distillation coefficient is
+% \begin{equation}
+% \lambda_{e+1}=\operatorname{clip}\left(
+% \lambda_e\operatorname{clip}(r_e,r_{\min},r_{\max}),
+% \lambda_{\min},\lambda_{\max}\right).
+% \end{equation}
+% Training starts with segmentation-only burn-in, then linearly warms up distillation, and finally activates GAD. During inference, DINOv3 and the projection head are discarded.
 
-\fi
+% \fi
 
 \input{sections/1-introduction.tex}
 
@@ -187,100 +187,15 @@ Training starts with segmentation-only burn-in, then linearly warms up distillat
 
 \input{sections/3-method}
 
-\section{Experiments and Results}
-\label{sec:experiments}
-
-\subsection{Datasets and Metrics}
-
-We evaluate GAD-MambaUNet on four public binary medical image segmentation datasets covering two representative segmentation tasks. For skin lesion segmentation, we use PH$^2$~\cite{mendoncca2013ph}, which contains 200 dermoscopic images with expert lesion annotations, and ISIC2018~\cite{codella2019skin}, which contains 2,594 dermoscopic images with pixel-level lesion masks. For polyp segmentation, we use CVC-ClinicDB~\cite{bernal2015clinicdb}, which contains 612 colonoscopic polyp images, and CVC-ColonDB~\cite{tajbakhsh2016colondb,vazquez2017benchmark}, which contains 379 colonoscopic images collected from different video sequences. These datasets include diverse imaging conditions, lesion appearances, object scales, boundary ambiguities, and foreground--background contrasts, providing a comprehensive evaluation of the robustness of lightweight segmentation models.
-
-We split each dataset into training, validation, and test subsets with a ratio of 80:10:10. The validation set is used for model selection, and the test set is used for final performance reporting. Dice score is used as the primary segmentation metric, and Intersection over Union (IoU) is also reported when applicable. To evaluate model efficiency, we report the number of trainable parameters and floating-point operations (FLOPs). Since the DINOv3 teacher is used only during training and is discarded during deployment, it does not introduce additional inference computation. Therefore, all efficiency metrics are computed using the student network alone.
-
-\subsection{Implementation Protocol}
+\input{sections/4-experiments.tex}
 
 
-All experiments are implemented in PyTorch and conducted under the same training and evaluation settings for fair comparison. Images from PH$^2$ and ISIC2018 are resized to $256\times256$, while images from CVC-ClinicDB and CVC-ColonDB are resized to $352\times352$. The validation set is used for checkpoint selection, and the corresponding test performance is reported.
 
-For GAD-MambaUNet, we use AdamW as the optimizer with an initial learning rate of $5\times10^{-4}$, a weight decay of $10^{-4}$, and cosine learning-rate decay to $10^{-6}$. All models are trained for 400 epochs with a batch size of 8, gradient clipping at 0.5, and standard data augmentation. The segmentation objective is the sum of weighted binary cross-entropy and weighted IoU losses. Unless otherwise specified, each configuration is repeated over five independent runs, and the mean test performance is reported.
 
-For training-time semantic supervision, we use frozen DINOv3 ViT-T/16 and ViT-B/16 models as semantic teachers in different experimental settings. The student feature after the first decoder block is aligned to the teacher feature through the projection head described in Section~\ref{sec:method}. DINOv3 distillation starts at epoch 10 and is linearly warmed up for 20 epochs. GAD is activated at epoch 30 and adaptively controls the distillation coefficient until epoch 360. During inference, the teacher branch, projection head, and GAD update are discarded, so the reported parameters and FLOPs are computed using only the student network.
 
-\begin{table*}[t]
-    \centering
-    \caption{Comparison on four datasets. Non-PH$^2$ baseline values are taken from the original MK-UNet paper under its reported protocol. Dice scores are reported in \%. PH$^2$, ClinicDB, and ColonDB entries for MK-UNet and GAD-MambaUNet are mean test Dice at the validation-selected checkpoint over repeated runs. DINOv3 is used only during training and adds no inference cost.}
-    \label{tab:reference_results}
-    \scriptsize
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{lcccccccc}
-        \toprule
-        Method & Params(M) & FLOPs(G) & Throughput(/s) & PH$^2$ & ISIC2018 & ClinicDB & ColonDB & Avg. \\
-        \midrule
-        U-Net & 34.53 & 65.53 & 119.03 & -- & 86.67 & 91.43 & 83.95 & -- \\
-        PraNet & 32.55 & 6.93 & 64.10 & -- & 88.46 & 91.71 & 89.16 & -- \\
-        UACANet & 69.16 & 31.51 & 43.28 & -- & 88.72 & 93.29 & 89.76 & -- \\
-        TransUNet & 105.32 & 38.52 & 65.35 & -- & 89.04 & 93.18 & 89.97 & -- \\
-        UNeXt & 1.47 & 0.57 & 172.41 & -- & 87.78 & 90.20 & 83.84 & -- \\
-        CMUNeXt & 0.418 & 1.09 & 175.43 & -- & 87.51 & 92.82 & 83.85 & -- \\
-        EGE-UNet & 0.054 & 0.072 & 101.01 & -- & 86.95 & 84.76 & 76.03 & -- \\
-        UltraLight VM-UNet & 0.050 & 0.060 & 98.03 & -- & 87.85 & 87.11 & 80.06 & -- \\
-        MK-UNet-T & 0.027 & 0.062 & 140.85 & 94.56 & 88.19 & 91.26 & 85.03 & -- \\
-        MK-UNet & 0.316 & 0.314 & 138.89 & 94.39 & 88.74 & 93.48 & 90.01 & -- \\
-        MK-UNet-L & 3.76 & 3.19 & 122.62 & 94.56 & 89.25 & 93.85 & 91.82 & -- \\
-        \midrule
-        GAD-MambaUNet-Tiny (Ours) & 0.076 & 0.051 & -- & 94.43 & 88.27 & 92.47 & 83.20 & -- \\
-        GAD-MambaUNet-Small (Ours) & 0.199 & 0.117 & -- & 94.40 & 88.63 & 93.85 & 90.17 & -- \\
-        GAD-MambaUNet-Base (Ours) & 0.493 & 0.291 & -- & \textbf{94.90} & 88.91 & 94.04 & 91.24 & -- \\
-        GAD-MambaUNet-Medium (Ours) & 1.839 & 0.955 & -- & 94.71 & 89.13 & 94.07 & 91.35 & -- \\
-        GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & 89.34 & \textbf{94.70} & \textbf{92.16} & -- \\
-        \midrule
-        GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.051 & -- & 94.61 & 88.61 & 93.09 & 86.54 & -- \\
-        GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.117 & -- & 94.73 & 88.94 & 94.16 & 91.51 & -- \\
-        GAD-MambaUNet-Base + DINOv3 (Ours) & 0.493 & 0.291 & -- & 95.16 & 89.06 & 94.17 & 91.96 & -- \\
-        GAD-MambaUNet-Medium + DINOv3 (Ours) & 1.839 & 0.955 & -- & 95.21 & 89.11 & 94.52 & \textbf{93.08} & -- \\
-        GAD-MambaUNet-Large + DINOv3 (Ours) & 5.871 & 3.325 & -- & 95.37 & 89.53 & 95.08 & 93.01 & -- \\
-        \bottomrule
-    \end{tabular}
-    }
-\end{table*}
 
-\subsection{Reference Baseline Analysis}
 
-Table~\ref{tab:reference_results} summarizes the reference landscape together with the completed CVC-ClinicDB and CVC-ColonDB scaling runs of GAD-MambaUNet. Fig.~\ref{fig:efficiency-comparison} further visualizes the average Dice--efficiency trade-off against student-side parameters and FLOPs. Heavy encoder-decoder and Transformer-based models, such as TransUNet, provide strong Dice scores but require substantially more parameters and computation. Lightweight CNN and state-space models reduce the computational footprint, but their performance varies across modalities: some are effective on skin lesions but degrade on colonoscopic polyp datasets where boundary ambiguity and background similarity are more severe.
-
-MK-UNet provides a strong local-convolutional baseline with a compact parameter count and competitive Dice scores across the four datasets. This makes it an appropriate reference point for our design. Without DINOv3 supervision, performance rises sharply from Tiny to Base and then largely saturates, with Large achieving the highest validation-selected ColonDB test Dice. Adding DINOv3 supervision improves the Medium variant to the best reported ColonDB score, while retaining the same student-side inference cost. The remaining experiments will determine whether GAD further improves this trade-off.
-
-\section{Ablation Study}
-\label{sec:ablation}
-
-The ablation study is designed to separate the contribution of the three main design choices: deep grouped state-space modeling, direction-group graph interaction, and gradient-adaptive DINOv3 distillation. Table~\ref{tab:ablation_plan} lists the planned variants. All variants will use the same data split, preprocessing, segmentation loss, and training schedule, so the measured differences can be attributed to architectural and distillation changes.
-
-\begin{table}[t]
-    \centering
-    \caption{Planned ablation variants for GAD-MambaUNet. Values are left blank until the corresponding experiments are completed.}
-    \label{tab:ablation_plan}
-    \scriptsize
-    \resizebox{\columnwidth}{!}{%
-    \begin{tabular}{lccccc}
-        \toprule
-        Variant & BUSI & ISIC2018 & ClinicDB & ColonDB & Avg. \\
-        \midrule
-        Local student baseline & -- & -- & -- & -- & -- \\
-        + Grouped Mamba blocks & -- & -- & -- & -- & -- \\
-        + DG-GSS & -- & -- & -- & -- & -- \\
-        + DINOv3 fixed distillation & -- & -- & -- & -- & -- \\
-        + GAD distillation & -- & -- & -- & -- & -- \\
-        \bottomrule
-    \end{tabular}
-    }
-\end{table}
-
-\subsection{Effect of Direction-Group Global Modeling}
-
-The first ablation compares the local student baseline with variants that insert grouped Mamba blocks and DG-GSS into the deep encoder-decoder stages. This comparison tests whether global context is beneficial when introduced only at low spatial resolutions. A positive result would indicate that long-range dependencies can be added without disturbing the high-resolution local features used for boundary reconstruction.
-
-\subsection{Effect of DINOv3 Distillation}
-
-The second ablation compares training without distillation, training with a fixed DINOv3 distillation coefficient, and training with GAD. Fixed distillation measures whether dense foundation-model features provide useful semantic regularization. GAD further measures whether adapting the teacher weight according to the student's gradient distribution stabilizes the transfer and improves the final mask quality.
+\input{sections/5-Ablation_Study.tex}
 
 \section{Conclusion}
 \label{sec:conclusion}

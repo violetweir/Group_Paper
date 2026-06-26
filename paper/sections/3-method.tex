@@ -1,4 +1,5 @@
 \section{Methodology}
+\label{sec:method}
 
 
 We describe the proposed GAD-MambaUNet by first introducing its core building block and then integrating it into an asymmetric U-shaped segmentation architecture. 
@@ -101,6 +102,8 @@ where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is ReLU, and $\psi$ maps 
 
 
 
+
+
 \subsection{Training-Time DINOv3 Supervision with GAD}
 
 Although DG-GSS improves contextual modeling inside the compact student network, training a lightweight segmentation model on limited medical datasets may still lead to insufficient semantic abstraction. Inspired by the DINOv3-based gradient-adaptive distillation strategy in RT-DETRv4~\cite{liao2025rtdetrv4}, we adapt training-time foundation-model supervision to lightweight medical image segmentation. A frozen DINOv3 ViT-B/16 model~\cite{simeoni2025dinov3} is used as the semantic teacher only during training, and the teacher branch is removed during inference.
@@ -142,6 +145,48 @@ The overall training objective is
 \lambda_e\mathcal{L}_{\mathrm{dist}},
 \end{equation}
 where $\lambda_e$ is the distillation coefficient at epoch $e$.
+
+
+\begin{table*}[h]
+    \centering
+    \caption{Quantitative comparison with representative lightweight medical image segmentation methods on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB. Dice scores are reported in \%. Baseline results are reproduced or cited from their reported settings when available. Params and FLOPs measure student-side inference complexity. For GAD-MambaUNet with DINOv3 supervision, the teacher model is used only during training and is excluded from deployment cost.}
+    \label{tab:reference_results}
+    \scriptsize
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccccc}
+        \toprule
+        Method & Params(M) & FLOPs(G) & Throughput(/s) & PH$^2$ & ISIC2018 & ClinicDB & ColonDB & Avg. \\
+        \midrule
+        U-Net & 34.53 & 65.53 & 119.03 & -- & 86.67 & 91.43 & 83.95 & -- \\
+        PraNet & 32.55 & 6.93 & 64.10 & -- & 88.46 & 91.71 & 89.16 & -- \\
+        UACANet & 69.16 & 31.51 & 43.28 & -- & 88.72 & 93.29 & 89.76 & -- \\
+        TransUNet & 105.32 & 38.52 & 65.35 & -- & 89.04 & 93.18 & 89.97 & -- \\
+        UNeXt & 1.47 & 0.57 & 172.41 & -- & 87.78 & 90.20 & 83.84 & -- \\
+        CMUNeXt & 0.418 & 1.09 & 175.43 & -- & 87.51 & 92.82 & 83.85 & -- \\
+        EGE-UNet & 0.054 & 0.072 & 101.01 & -- & 86.95 & 84.76 & 76.03 & -- \\
+        UltraLight VM-UNet & 0.050 & 0.060 & 98.03 & -- & 87.85 & 87.11 & 80.06 & -- \\
+        MK-UNet-T & 0.027 & 0.062 & 140.85 & 94.56 & 88.19 & 91.26 & 85.03 & 89.76 \\
+        MK-UNet & 0.316 & 0.314 & 138.89 & 94.39 & 88.74 & 93.48 & 90.01 & 91.66 \\
+        MK-UNet-L & 3.76 & 3.19 & 122.62 & 94.56 & 89.25 & 93.85 & 91.82 & 92.37 \\
+        \midrule
+        GAD-MambaUNet-Tiny (Ours) & 0.076 & 0.054 & -- & 94.43 & 88.27 & 92.47 & 83.20 & 89.59 \\
+        GAD-MambaUNet-Small (Ours) & 0.199 & 0.128 & -- & 94.40 & 88.63 & 93.85 & 90.17 & 91.76 \\
+        GAD-MambaUNet-Base (Ours) & 0.493 & 0.322 & -- & 94.90 & 88.91 & 94.04 & 91.24 & 92.27 \\
+        GAD-MambaUNet-Medium (Ours) & 1.839 & 0.955 & -- & 94.71 & 89.13 & 94.07 & 91.35 & 92.31 \\
+        GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & 89.34 & 94.70 & 92.16 & 92.77 \\
+        \midrule
+        GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.054 & -- & 94.61 & 88.61 & 93.09 & 86.54 & 90.71 \\
+        GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.128 & -- & 94.73 & 88.94 & 94.16 & 91.51 & 92.34 \\
+        GAD-MambaUNet-Base + DINOv3 (Ours) & 0.493 & 0.322 & -- & 95.16 & 89.06 & 94.17 & 91.96 & 92.59 \\
+        GAD-MambaUNet-Medium + DINOv3 (Ours) & 1.839 & 0.955 & -- & 95.21 & 89.11 & 94.52 & \textbf{93.08} & 92.98 \\
+        GAD-MambaUNet-Large + DINOv3 (Ours) & 5.871 & 3.325 & -- & \textbf{95.37} & \textbf{89.53} & \textbf{95.08} & 93.01 & \textbf{93.25} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table*}
+
+
+
 
 Using a fixed distillation coefficient assumes that the proper teacher supervision strength remains unchanged throughout training. However, the optimization state of the student changes over time, and the gradient contribution of the teacher-supervised decoder block may become either too weak or too dominant. To balance semantic supervision and the primary segmentation objective, GAD dynamically updates $\lambda_e$ according to the gradient share of the aligned decoder block. After back-propagation and before gradient clipping, we compute
 \begin{equation}

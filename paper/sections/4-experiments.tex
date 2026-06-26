@@ -1,0 +1,30 @@
+
+\section{Experiments and Results}
+\label{sec:experiments}
+
+\subsection{Datasets and Metrics}
+
+We evaluate GAD-MambaUNet on four public binary medical image segmentation datasets covering two representative segmentation tasks. For skin lesion segmentation, we use PH$^2$~\cite{mendoncca2013ph}, which contains 200 dermoscopic images with expert lesion annotations, and ISIC2018~\cite{codella2019skin}, which contains 2,594 dermoscopic images with pixel-level lesion masks. For polyp segmentation, we use CVC-ClinicDB~\cite{bernal2015clinicdb}, which contains 612 colonoscopic polyp images, and CVC-ColonDB~\cite{tajbakhsh2016colondb,vazquez2017benchmark}, which contains 379 colonoscopic images collected from different video sequences. These datasets include diverse imaging conditions, lesion appearances, object scales, boundary ambiguities, and foreground--background contrasts, providing a comprehensive evaluation of the robustness of lightweight segmentation models.
+
+We split each dataset into training, validation, and test subsets with a ratio of 80:10:10. The validation set is used for model selection, and the test set is used for final performance reporting. Dice score is used as the primary segmentation metric, and Intersection over Union (IoU) is also reported when applicable. To evaluate model efficiency, we report the number of trainable parameters and floating-point operations (FLOPs). Since the DINOv3 teacher is used only during training and is discarded during deployment, it does not introduce additional inference computation. Therefore, all efficiency metrics are computed using the student network alone.
+
+\subsection{Implementation Protocol}
+
+
+All experiments are implemented in PyTorch and conducted under the same training and evaluation settings for fair comparison. Images from PH$^2$ and ISIC2018 are resized to $256\times256$, while images from CVC-ClinicDB and CVC-ColonDB are resized to $352\times352$. The validation set is used for checkpoint selection, and the corresponding test performance is reported.
+
+For GAD-MambaUNet, we use AdamW as the optimizer with an initial learning rate of $5\times10^{-4}$, a weight decay of $10^{-4}$, and cosine learning-rate decay to $10^{-6}$. All models are trained for 400 epochs with a batch size of 8, gradient clipping at 0.5, and standard data augmentation. The segmentation objective is the sum of weighted binary cross-entropy and weighted IoU losses. Unless otherwise specified, each configuration is repeated over five independent runs, and the mean test performance is reported.
+
+For training-time semantic supervision, we use frozen DINOv3 ViT-T/16 and ViT-B/16 models as semantic teachers in different experimental settings. The student feature after the first decoder block is aligned to the teacher feature through the projection head described in Section~\ref{sec:method}. DINOv3 distillation starts at epoch 10 and is linearly warmed up for 20 epochs. GAD is activated at epoch 30 and adaptively controls the distillation coefficient until epoch 360. During inference, the teacher branch, projection head, and GAD update are discarded, so the reported parameters and FLOPs are computed using only the student network.
+
+
+
+\subsection{Comparison with Reference Methods}
+
+Table~\ref{tab:reference_results} compares GAD-MambaUNet with representative medical image segmentation networks and lightweight baselines on four public datasets. Compared with heavy encoder--decoder and Transformer-based models, such as U-Net, UACANet, and TransUNet, the proposed models require substantially fewer parameters and FLOPs while maintaining competitive or better Dice scores. This indicates that the proposed asymmetric local--global design can improve segmentation accuracy without relying on a heavy backbone.
+
+Among lightweight methods, MK-UNet is a strong reference baseline because it achieves competitive results with compact multi-kernel convolutional blocks. Compared with MK-UNet variants, GAD-MambaUNet introduces DG-GSS blocks only at deep low-resolution stages, thereby improving contextual modeling while keeping the inference cost low. Without DINOv3 supervision, GAD-MambaUNet-Base already achieves strong performance with only 0.493M parameters and 0.291G FLOPs, obtaining 94.90\%, 88.91\%, 94.04\%, and 91.24\% Dice on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB, respectively. Increasing the model scale further improves the polyp segmentation results, with GAD-MambaUNet-Large achieving 94.70\% on CVC-ClinicDB and 92.16\% on CVC-ColonDB.
+
+Training-time DINOv3 supervision consistently improves the student models without changing their student-side inference complexity. For example, GAD-MambaUNet-Base improves from 94.90\% to 95.1\% on PH$^2$, from 88.91\% to 89.06\% on ISIC2018, from 94.04\% to 94.17\% on CVC-ClinicDB, and from 91.24\% to 91.96\% on CVC-ColonDB. The improvement is more evident on the challenging CVC-ColonDB dataset, where stronger semantic guidance helps distinguish polyp regions from visually similar background tissues. The Medium variant with DINOv3 obtains the best ColonDB Dice of 93.08\%, while the Large variant with DINOv3 achieves the best PH$^2$, ISIC2018, and CVC-ClinicDB results among the compared variants.
+
+Overall, the results show that DG-GSS improves the accuracy--efficiency balance of the lightweight student, and DINOv3-GAD further enhances semantic representation during training without increasing deployment cost. This supports the motivation of combining deep direction--group state-space interaction with training-time foundation-model supervision for lightweight medical image segmentation.

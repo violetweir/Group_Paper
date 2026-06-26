@@ -1,0 +1,32 @@
+\section{Ablation Study}
+\label{sec}
+
+To further analyze the contribution of each component in GAD-MambaUNet, we conduct ablation studies on the proposed architecture and training-time semantic supervision. Unless otherwise specified, all ablation variants are trained under the same settings described in Section~\ref{sec}. The validation set is used for checkpoint selection, and the corresponding test Dice score is reported. All efficiency metrics are measured using the student network only.
+
+\subsection{Effectiveness of DG-GSS}
+
+\begin{table*}[t]
+    \centering
+    \caption{Ablation study of the proposed DG-GSS module. Dice scores are reported in \%. Params and FLOPs are measured using the student network only.}
+    \label{tab:ablation_dggss}
+    \scriptsize
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lcccccc}
+        \toprule
+        Variant & Params(M) & FLOPs(G) & PH$^2$ & ISIC2018 & ClinicDB & ColonDB \\
+        \midrule
+        MKIR baseline (MK-UNet) & 0.316 & 0.314 & 94.39 & 88.74 & 93.48 & 90.01 \\
+        w/ GroupedSS2D & 0.622 & 0.281 & 94.47 & 88.79 & 93.76 & 90.64 \\
+        w/ DG-GSS & 0.493 & 0.291 & 94.90 & 88.91 & 94.04 & 91.24 \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table*}
+
+We first analyze the effectiveness of the proposed Direction-Group Graph Selective Scan. As shown in Table~\ref{tab}, MK-UNet is used as the MKIR-based lightweight baseline, which mainly relies on local multi-kernel convolutional modeling. The GroupedSS2D variant replaces part of the deep local convolutional blocks with grouped multi-directional selective scanning, while the complete DG-GSS variant further introduces direction--group graph interaction among scan-direction and channel-group responses.
+
+Compared with the MKIR baseline, introducing GroupedSS2D improves Dice scores from 94.39\% to 94.47\% on PH$^2$, from 88.74\% to 88.79\% on ISIC2018, from 93.48\% to 93.76\% on CVC-ClinicDB, and from 90.01\% to 90.64\% on CVC-ColonDB. This indicates that replacing deep local blocks with grouped selective scanning can enhance long-range contextual modeling while maintaining a low computational cost.
+
+Furthermore, the complete DG-GSS variant consistently improves over the GroupedSS2D variant on all four datasets, achieving 94.90\%, 88.91\%, 94.04\%, and 91.24\% Dice on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB, respectively. The gains are especially clear on CVC-ColonDB, where DG-GSS improves the Dice score by 0.60\% over GroupedSS2D and by 1.23\% over the MKIR baseline. This suggests that graph-based interaction among direction--group responses helps capture complementary contextual cues across scan directions and channel subspaces.
+
+In terms of efficiency, DG-GSS keeps the computation lightweight by applying state-space modeling only at low-resolution deep stages. Although the parameter count differs across variants, all models remain within the lightweight range, and DG-GSS achieves the best overall segmentation performance with only 0.493M parameters and 0.291G FLOPs. These results verify that the proposed DG-GSS module improves the accuracy--efficiency balance of the student network rather than simply relying on a heavier architecture.
