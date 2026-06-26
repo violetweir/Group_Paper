@@ -230,10 +230,10 @@ For GAD-MambaUNet, we use AdamW with an initial learning rate of $5\times10^{-4}
         GAD-MambaUNet-Medium (Ours) & 1.839 & 0.955 & -- & 94.71 & -- & 94.07 & 91.35 & -- \\
         GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & -- & \textbf{94.70} & \textbf{92.16} & -- \\
         \midrule
-        GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.051 & -- & -- & -- & -- & 86.54 & -- \\
-        GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.117 & -- & -- & -- & -- & 91.51 & -- \\
-        GAD-MambaUNet-Base + DINOv3 (Ours) & 0.493 & 0.291 & -- & -- & -- & -- & 91.96 & -- \\
-        GAD-MambaUNet-Medium + DINOv3 (Ours) & 1.839 & 0.955 & -- & -- & -- & -- & \textbf{93.08} & -- \\
+        GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.051 & -- & -- & -- & 93.09 & 86.54 & -- \\
+        GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.117 & -- & -- & -- & 94.16 & 91.51 & -- \\
+        GAD-MambaUNet-Base + DINOv3 (Ours) & 0.493 & 0.291 & -- & -- & -- & 94.17 & 91.96 & -- \\
+        GAD-MambaUNet-Medium + DINOv3 (Ours) & 1.839 & 0.955 & -- & -- & -- & 94.52 & \textbf{93.08} & -- \\
         GAD-MambaUNet-Large + DINOv3 (Ours) & 5.871 & 3.325 & -- & -- & -- & -- & 93.01 & -- \\
         \bottomrule
     \end{tabular}
@@ -242,7 +242,7 @@ For GAD-MambaUNet, we use AdamW with an initial learning rate of $5\times10^{-4}
 
 \subsection{Reference Baseline Analysis}
 
-Table~\ref{tab:reference_results} summarizes the reference landscape together with the completed CVC-ClinicDB and CVC-ColonDB scaling runs of GAD-MambaUNet. Fig.~\ref{fig:colondb-efficiency} further visualizes the ColonDB Dice--efficiency trade-off against student-side parameters and FLOPs. Heavy encoder-decoder and Transformer-based models, such as TransUNet, provide strong Dice scores but require substantially more parameters and computation. Lightweight CNN and state-space models reduce the computational footprint, but their performance varies across modalities: some are effective on skin lesions but degrade on colonoscopic polyp datasets where boundary ambiguity and background similarity are more severe.
+Table~\ref{tab:reference_results} summarizes the reference landscape together with the completed CVC-ClinicDB and CVC-ColonDB scaling runs of GAD-MambaUNet. Fig.~\ref{fig:efficiency-comparison} further visualizes the average Dice--efficiency trade-off against student-side parameters and FLOPs. Heavy encoder-decoder and Transformer-based models, such as TransUNet, provide strong Dice scores but require substantially more parameters and computation. Lightweight CNN and state-space models reduce the computational footprint, but their performance varies across modalities: some are effective on skin lesions but degrade on colonoscopic polyp datasets where boundary ambiguity and background similarity are more severe.
 
 MK-UNet provides a strong local-convolutional baseline with a compact parameter count and competitive Dice scores across the four datasets. This makes it an appropriate reference point for our design. Without DINOv3 supervision, performance rises sharply from Tiny to Base and then largely saturates, with Large achieving the highest validation-selected ColonDB test Dice. Adding DINOv3 supervision improves the Medium variant to the best reported ColonDB score, while retaining the same student-side inference cost. The remaining experiments will determine whether GAD further improves this trade-off.
 
