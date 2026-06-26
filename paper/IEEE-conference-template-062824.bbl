@@ -77,8 +77,8 @@ G.~Hinton, O.~Vinyals, and J.~Dean, ``Distilling the knowledge in a neural netwo
 \bibitem{velickovic2018gat}
 P.~Veli\v{c}kovi\'{c}, G.~Cucurull, A.~Casanova, A.~Romero, P.~Li\`{o}, and Y.~Bengio, ``Graph attention networks,'' in \emph{International Conference on Learning Representations}, 2018.
 
-\bibitem{al2020dataset}
-W.~Al-Dhabyani, M.~Gomaa, H.~Khaled, and A.~Fahmy, ``Dataset of breast ultrasound images,'' \emph{Data in Brief}, vol.~28, p. 104863, 2020.
+\bibitem{mendoncca2013ph}
+T.~Mendon{\c{c}}a, P.~M. Ferreira, J.~S. Marques, A.~R. Marcal, and J.~Rozeira, ``Ph 2-a dermoscopic image database for research and benchmarking,'' in \emph{2013 35th annual international conference of the IEEE engineering in medicine and biology society (EMBC)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2013, pp. 5437--5440.
 
 \bibitem{codella2019skin}
 N.~Codella, V.~Rotemberg, P.~Tschandl, M.~E. Celebi, S.~Dusza, D.~Gutman, B.~Helba, A.~Kalloo, K.~Liopyris, M.~Marchetti \emph{et~al.}, ``Skin lesion analysis toward melanoma detection 2018: A challenge hosted by the international skin imaging collaboration,'' \emph{arXiv preprint arXiv:1902.03368}, 2019.

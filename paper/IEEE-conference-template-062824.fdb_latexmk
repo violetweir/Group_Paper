@@ -1,13 +1,14 @@
 # Fdb version 4
-["bibtex IEEE-conference-template-062824"] 1782406067.21629 "IEEE-conference-template-062824.aux" "IEEE-conference-template-062824.bbl" "IEEE-conference-template-062824" 1782448939.55983 0
-  "./paper_refs.bib" 1782112903.39339 7938 71414acaab4f826ea32fc101dba1fc8d ""
+["bibtex IEEE-conference-template-062824"] 1782451586.52598 "IEEE-conference-template-062824.aux" "IEEE-conference-template-062824.bbl" "IEEE-conference-template-062824" 1782451762.39216 0
+  "./paper_refs.bib" 1782451116.91106 8349 325c315e60acbdc695106b3248a876ca ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "IEEE-conference-template-062824.aux" 1782448939.24574 6357 80b1c670f6ad89742fa38c601b2cd509 "pdflatex"
+  "IEEE-conference-template-062824.aux" 1782451762.11387 6305 9fbbf7d6c9930f522cec80f6ffbb0d3c "pdflatex"
   (generated)
   "IEEE-conference-template-062824.bbl"
   "IEEE-conference-template-062824.blg"
   (rewritten before read)
-["pdflatex"] 1782448938.70862 "IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1782448939.56001 0
+["pdflatex"] 1782451761.63723 "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1782451762.3923 0
+  "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" 1782451761.35242 31666 de82254222f12c28858dd718edd00371 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -97,9 +98,9 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1753678625 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1753678515 3345738 5ac3075ea5f2f3ef594563ed932ed56b ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "IEEE-conference-template-062824.aux" 1782448939.24574 6357 80b1c670f6ad89742fa38c601b2cd509 "pdflatex"
-  "IEEE-conference-template-062824.bbl" 1782406067.33102 6682 8077b89c31852dff60461eb00281336a "bibtex IEEE-conference-template-062824"
-  "IEEE-conference-template-062824.tex" 1782448904.87923 31026 09419a83721224e22d50d6bf3184da92 ""
+  "IEEE-conference-template-062824.aux" 1782451762.11387 6305 9fbbf7d6c9930f522cec80f6ffbb0d3c "pdflatex"
+  "IEEE-conference-template-062824.bbl" 1782451586.64366 6876 b981b8b005c1efd5586b240818914866 "bibtex IEEE-conference-template-062824"
+  "IEEE-conference-template-062824.tex" 1782451761.35242 31666 de82254222f12c28858dd718edd00371 ""
   "IEEEtran.cls" 1781931502.87636 288304 b67b6fc6c2abb39f9b461923f5199343 ""
   "all-network.pdf" 1781931502.87545 124997 2b3a72f61d8c7461313edd92bc0ba8ca ""
   "figures/avg_dice_flops.pdf" 1782052575.44889 22551 96989dfc8453eaaa89909f890e875b42 ""

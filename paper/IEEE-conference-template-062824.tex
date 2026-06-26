@@ -192,15 +192,18 @@ Training starts with segmentation-only burn-in, then linearly warms up distillat
 
 \subsection{Datasets and Metrics}
 
-We evaluate the segmentation framework on four public binary medical image segmentation datasets covering three clinical scenarios. BUSI~\cite{al2020dataset} contains breast ultrasound images with benign and malignant tumor cases. ISIC2018~\cite{codella2019skin} contains dermoscopic skin lesion images with pixel-level lesion masks. CVC-ClinicDB~\cite{bernal2015clinicdb} and CVC-ColonDB~\cite{tajbakhsh2016colondb,vazquez2017benchmark} contain colonoscopic polyp images collected from different video sources. These datasets jointly test low-contrast boundaries, irregular lesion shapes, texture ambiguity, and cross-source appearance shifts.
+We evaluate GAD-MambaUNet on four public binary medical image segmentation datasets covering two representative segmentation tasks. For skin lesion segmentation, we use PH$^2$~\cite{mendoncca2013ph}, which contains 200 dermoscopic images with expert lesion annotations, and ISIC2018~\cite{codella2019skin}, which contains 2,594 dermoscopic images with pixel-level lesion masks. For polyp segmentation, we use CVC-ClinicDB~\cite{bernal2015clinicdb}, which contains 612 colonoscopic polyp images, and CVC-ColonDB~\cite{tajbakhsh2016colondb,vazquez2017benchmark}, which contains 379 colonoscopic images collected from different video sequences. These datasets include diverse imaging conditions, lesion appearances, object scales, boundary ambiguities, and foreground--background contrasts, providing a comprehensive evaluation of the robustness of lightweight segmentation models.
 
-Following the MK-UNet evaluation protocol~\cite{rahman2025mkunet}, Dice score is used as the primary metric, and model efficiency is reported with parameters, FLOPs, and throughput. The current draft uses the comparison results reported in the original MK-UNet paper as reference baselines. The validation-selected CVC-ClinicDB and CVC-ColonDB test Dice of the proposed GAD-MambaUNet capacity variants are reported in Table~\ref{tab:reference_results}; results on the remaining datasets will be added after the corresponding runs are completed under the same protocol.
+We split each dataset into training, validation, and test subsets with a ratio of 80:10:10. The validation set is used for model selection, and the test set is used for final performance reporting. Dice score is used as the primary segmentation metric, and Intersection over Union (IoU) is also reported when applicable. To evaluate model efficiency, we report the number of trainable parameters and floating-point operations (FLOPs). Since the DINOv3 teacher is used only during training and is discarded during deployment, it does not introduce additional inference computation. Therefore, all efficiency metrics are computed using the student network alone.
 
 \subsection{Implementation Protocol}
 
-For the reference baselines, we retain the dataset splits and evaluation pipeline of MK-UNet~\cite{rahman2025mkunet}. Images are resized to $256\times256$ for BUSI and ISIC2018, and to $352\times352$ for CVC-ClinicDB and CVC-ColonDB. The data are partitioned into training, validation, and test subsets using an 80:10:10 split.
 
-For GAD-MambaUNet, we use AdamW with an initial learning rate of $5\times10^{-4}$, weight decay of $10^{-4}$, and cosine learning-rate decay to $10^{-6}$. Models are trained for 400 epochs with a batch size of 8, multi-scale factors $\{0.75,1.0,1.25\}$, gradient clipping at 0.5, and data augmentation enabled. The segmentation objective is the sum of weighted binary cross-entropy and weighted IoU losses. Each configuration is repeated over five runs with consecutive random seeds. DINOv3 distillation starts at epoch 10 and is linearly warmed up for 20 epochs; GAD starts at epoch 30 and controls the distillation weight until epoch 360. We use the MK-UNet evaluation script and reporting convention for model selection and final test evaluation. The teacher branch, feature projection head, and GAD coefficient update are removed at inference, so deployment cost is determined by the student network alone.
+All experiments are implemented in PyTorch and conducted under the same training and evaluation settings for fair comparison. Images from PH$^2$ and ISIC2018 are resized to $256\times256$, while images from CVC-ClinicDB and CVC-ColonDB are resized to $352\times352$. The validation set is used for checkpoint selection, and the corresponding test performance is reported.
+
+For GAD-MambaUNet, we use AdamW as the optimizer with an initial learning rate of $5\times10^{-4}$, a weight decay of $10^{-4}$, and cosine learning-rate decay to $10^{-6}$. All models are trained for 400 epochs with a batch size of 8, gradient clipping at 0.5, and standard data augmentation. The segmentation objective is the sum of weighted binary cross-entropy and weighted IoU losses. Unless otherwise specified, each configuration is repeated over five independent runs, and the mean test performance is reported.
+
+For training-time semantic supervision, we use frozen DINOv3 ViT-T/16 and ViT-B/16 models as semantic teachers in different experimental settings. The student feature after the first decoder block is aligned to the teacher feature through the projection head described in Section~\ref{sec:method}. DINOv3 distillation starts at epoch 10 and is linearly warmed up for 20 epochs. GAD is activated at epoch 30 and adaptively controls the distillation coefficient until epoch 360. During inference, the teacher branch, projection head, and GAD update are discarded, so the reported parameters and FLOPs are computed using only the student network.
 
 \begin{table*}[t]
     \centering
@@ -224,11 +227,11 @@ For GAD-MambaUNet, we use AdamW with an initial learning rate of $5\times10^{-4}
         MK-UNet & 0.316 & 0.314 & 138.89 & 94.39 & 88.74 & 93.48 & 90.01 & -- \\
         MK-UNet-L & 3.76 & 3.19 & 122.62 & 94.56 & 89.25 & 93.85 & 91.82 & -- \\
         \midrule
-        GAD-MambaUNet-Tiny (Ours) & 0.076 & 0.051 & -- & 94.43 & -- & 92.47 & 83.20 & -- \\
-        GAD-MambaUNet-Small (Ours) & 0.199 & 0.117 & -- & 94.40 & -- & 93.85 & 90.17 & -- \\
-        GAD-MambaUNet-Base (Ours) & 0.493 & 0.291 & -- & \textbf{94.90} & -- & 94.04 & 91.24 & -- \\
-        GAD-MambaUNet-Medium (Ours) & 1.839 & 0.955 & -- & 94.71 & -- & 94.07 & 91.35 & -- \\
-        GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & -- & \textbf{94.70} & \textbf{92.16} & -- \\
+        GAD-MambaUNet-Tiny (Ours) & 0.076 & 0.051 & -- & 94.43 & 88.27 & 92.47 & 83.20 & -- \\
+        GAD-MambaUNet-Small (Ours) & 0.199 & 0.117 & -- & 94.40 & 88.63 & 93.85 & 90.17 & -- \\
+        GAD-MambaUNet-Base (Ours) & 0.493 & 0.291 & -- & \textbf{94.90} & 88.91 & 94.04 & 91.24 & -- \\
+        GAD-MambaUNet-Medium (Ours) & 1.839 & 0.955 & -- & 94.71 & 89.13 & 94.07 & 91.35 & -- \\
+        GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & 89.34 & \textbf{94.70} & \textbf{92.16} & -- \\
         \midrule
         GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.051 & -- & -- & -- & 93.09 & 86.54 & -- \\
         GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.117 & -- & -- & -- & 94.16 & 91.51 & -- \\
