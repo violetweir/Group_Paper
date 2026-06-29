@@ -195,12 +195,12 @@ medical image segmentation, lightweight networks, state-space models, DINOv3, kn
 
 
 
-\input{sections/5-Ablation_Study.tex}
+% \input{sections/5-Ablation_Study.tex}
 
 \section{Conclusion}
-\label{sec:conclusion}
 
-This paper presents GAD-MambaUNet, a lightweight medical image segmentation framework that combines high-resolution multi-kernel local modeling, deep direction-group state-space interaction, and gradient-adaptive DINOv3 feature distillation. The design keeps inference compact by using the foundation model only during training, while targeting the common failure modes of binary medical segmentation: weak boundaries, appearance ambiguity, and insufficient global context. Initial CVC-ClinicDB and CVC-ColonDB scaling results without DINOv3 show that strong accuracy is attainable with sub-megaparameter variants, while Large gives the strongest reported validation-selected ColonDB result. The remaining multi-dataset and distillation ablations will complete the evaluation.
+In this paper, we proposed GAD-MambaUNet, a lightweight medical image segmentation network that combines efficient local modeling, direction--group state-space interaction, and training-time foundation-model supervision. To improve contextual modeling in compact segmentation networks, we introduced Direction-Group Graph Selective Scan (DG-GSS), which treats scan-direction and channel-group responses as graph nodes and enables structured information exchange before multi-directional fusion. We further incorporated DINOv3-GAD supervision, where a frozen DINOv3 teacher provides semantic guidance during training and Gradient-Adaptive Distillation dynamically regulates the distillation strength. Since the teacher branch is removed after training, the proposed method introduces no additional inference cost. Experiments on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB demonstrate that GAD-MambaUNet achieves a favorable accuracy--efficiency balance compared with representative lightweight and general segmentation methods. Ablation studies further verify the effectiveness of DG-GSS and training-time DINOv3-GAD supervision.
+
 
 \bibliographystyle{IEEEtran}
 \bibliography{paper_refs}

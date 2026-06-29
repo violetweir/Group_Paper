@@ -2,7 +2,7 @@ PWD /Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper
 INPUT /usr/local/texlive/2025/texmf.cnf
 INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex
+INPUT IEEE-conference-template-062824.tex
 OUTPUT IEEE-conference-template-062824.log
 INPUT ./IEEEtran.cls
 INPUT IEEEtran.cls
@@ -198,9 +198,6 @@ INPUT /usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
-INPUT ./sections/5-Ablation_Study.tex
-INPUT ./sections/5-Ablation_Study.tex
-INPUT sections/5-Ablation_Study.tex
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT ./IEEE-conference-template-062824.bbl

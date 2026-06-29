@@ -11,20 +11,68 @@ We split each dataset into training, validation, and test subsets with a ratio o
 \subsection{Implementation Protocol}
 
 
+
+\begin{table*}[t]
+\centering
+\caption{Ablation study of DG-GSS. Dice scores are reported in \%.}
+\label{tab:ablation_dggss}
+\scriptsize
+\begin{tabular}{lcccccc}
+\hline
+Variant & Params(M) & FLOPs(G) & PH$^2$ & ISIC2018 & ClinicDB & ColonDB \\
+\hline
+MKIR baseline (MK-UNet) & 0.316 & 0.314 & 94.39 & 88.74 & 93.48 & 90.01 \\
+w/ GroupedSS2D & 0.416 & 0.281 & 94.47 & 88.79 & 93.76 & 90.64 \\
+w/ DG-GSS & 0.493 & 0.322 & 94.90 & 88.91 & 94.04 & 91.24 \\
+\hline
+\end{tabular}
+\end{table*}
+
 All experiments are implemented in PyTorch and conducted under the same training and evaluation settings for fair comparison. Images from PH$^2$ and ISIC2018 are resized to $256\times256$, while images from CVC-ClinicDB and CVC-ColonDB are resized to $352\times352$. The validation set is used for checkpoint selection, and the corresponding test performance is reported.
 
 For GAD-MambaUNet, we use AdamW as the optimizer with an initial learning rate of $5\times10^{-4}$, a weight decay of $10^{-4}$, and cosine learning-rate decay to $10^{-6}$. All models are trained for 400 epochs with a batch size of 8, gradient clipping at 0.5, and standard data augmentation. The segmentation objective is the sum of weighted binary cross-entropy and weighted IoU losses. Unless otherwise specified, each configuration is repeated over five independent runs, and the mean test performance is reported.
+
+
+
 
 For training-time semantic supervision, we use frozen DINOv3 ViT-T/16 and ViT-B/16 models as semantic teachers in different experimental settings. The student feature after the first decoder block is aligned to the teacher feature through the projection head described in Section~\ref{sec:method}. DINOv3 distillation starts at epoch 10 and is linearly warmed up for 20 epochs. GAD is activated at epoch 30 and adaptively controls the distillation coefficient until epoch 360. During inference, the teacher branch, projection head, and GAD update are discarded, so the reported parameters and FLOPs are computed using only the student network.
 
 
 
+
 \subsection{Comparison with Reference Methods}
 
-Table~\ref{tab:reference_results} compares GAD-MambaUNet with representative medical image segmentation networks and lightweight baselines on four public datasets. Compared with heavy encoder--decoder and Transformer-based models, such as U-Net, UACANet, and TransUNet, the proposed models require substantially fewer parameters and FLOPs while maintaining competitive or better Dice scores. This indicates that the proposed asymmetric local--global design can improve segmentation accuracy without relying on a heavy backbone.
+Table~\ref{tab:reference_results} compares GAD-MambaUNet with representative medical image segmentation networks and lightweight baselines on four public datasets. Compared with heavy encoder-decoder and Transformer-based models, such as U-Net, UACANet, and TransUNet, the proposed models require substantially fewer parameters and FLOPs while maintaining competitive or better Dice scores. This indicates that the proposed asymmetric local--global design can improve segmentation accuracy without relying on a heavy backbone.
 
-Among lightweight methods, MK-UNet is a strong reference baseline because it achieves competitive results with compact multi-kernel convolutional blocks. Compared with MK-UNet variants, GAD-MambaUNet introduces DG-GSS blocks only at deep low-resolution stages, thereby improving contextual modeling while keeping the inference cost low. Without DINOv3 supervision, GAD-MambaUNet-Base already achieves strong performance with only 0.493M parameters and 0.291G FLOPs, obtaining 94.90\%, 88.91\%, 94.04\%, and 91.24\% Dice on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB, respectively. Increasing the model scale further improves the polyp segmentation results, with GAD-MambaUNet-Large achieving 94.70\% on CVC-ClinicDB and 92.16\% on CVC-ColonDB.
+Among lightweight methods, MK-UNet is a strong reference baseline because it achieves competitive results with compact multi-kernel convolutional blocks. Compared with MK-UNet variants, GAD-MambaUNet introduces DG-GSS blocks only at deep low-resolution stages, thereby improving contextual modeling while keeping the inference cost low. Without DINOv3 supervision, GAD-MambaUNet-Base already achieves strong performance with only 0.493M parameters and 0.291G FLOPs, obtaining 94.90\%, 88.91\%, 94.04\%, and 91.24\% Dice on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB, respectively. Increasing the model scale further improves the ClinicDB result, with GAD-MambaUNet-Large achieving 94.70\% on CVC-ClinicDB and 91.37\% on CVC-ColonDB.
 
 Training-time DINOv3 supervision consistently improves the student models without changing their student-side inference complexity. For example, GAD-MambaUNet-Base improves from 94.90\% to 95.1\% on PH$^2$, from 88.91\% to 89.06\% on ISIC2018, from 94.04\% to 94.17\% on CVC-ClinicDB, and from 91.24\% to 91.96\% on CVC-ColonDB. The improvement is more evident on the challenging CVC-ColonDB dataset, where stronger semantic guidance helps distinguish polyp regions from visually similar background tissues. The Medium variant with DINOv3 obtains the best ColonDB Dice of 93.08\%, while the Large variant with DINOv3 achieves the best PH$^2$, ISIC2018, and CVC-ClinicDB results among the compared variants.
 
 Overall, the results show that DG-GSS improves the accuracy--efficiency balance of the lightweight student, and DINOv3-GAD further enhances semantic representation during training without increasing deployment cost. This supports the motivation of combining deep direction--group state-space interaction with training-time foundation-model supervision for lightweight medical image segmentation.
+
+
+
+
+
+
+\subsection{Ablation Study of DG-GSS}
+
+% To verify the effectiveness of the proposed DG-GSS module, we compare three representative variants in Table~\ref{tab:ablation_dggss}. The MKIR baseline corresponds to the lightweight convolutional design of MK-UNet. The GroupedSS2D variant replaces part of the deep local blocks with grouped multi-directional selective scanning, while the complete DG-GSS variant further introduces direction--group graph interaction among scan-direction and channel-group responses.
+
+% Compared with the MKIR baseline, GroupedSS2D improves the Dice scores on all four datasets, indicating that grouped selective scanning is beneficial for long-range context modeling at deep low-resolution stages. The complete DG-GSS variant further improves the Dice scores to 94.90\%, 88.91\%, 94.04\%, and 91.24\% on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB, respectively. The gain is especially clear on CVC-ColonDB, where DG-GSS improves the Dice score by 1.23\% over the MKIR baseline.
+
+% In terms of efficiency, DG-GSS achieves the best overall segmentation performance with only 0.493M parameters and 0.291G FLOPs. Since the module is applied only at low-resolution deep stages, it improves contextual representation while preserving lightweight inference. These results confirm that direction--group graph interaction is an effective design for improving the accuracy--efficiency balance of the student network.
+
+To verify the effectiveness of the proposed Direction-Group Graph Selective Scan, we conduct an ablation study by comparing three representative variants, as shown in Table~\ref{tab}. The MKIR baseline corresponds to the lightweight convolutional design of MK-UNet, which mainly relies on local multi-kernel feature extraction. The GroupedSS2D variant replaces part of the deep local blocks with grouped multi-directional selective scanning, while the complete DG-GSS variant further introduces direction--group graph interaction among scan-direction and channel-group responses.
+
+Compared with the MKIR baseline, introducing GroupedSS2D improves the Dice score from 94.39\% to 94.47\% on PH$^2$, from 88.74\% to 88.79\% on ISIC2018, from 93.48\% to 93.76\% on CVC-ClinicDB, and from 90.01\% to 90.64\% on CVC-ColonDB. This indicates that replacing deep local convolutional blocks with grouped selective scanning can enhance long-range contextual modeling while maintaining low computational cost.
+
+The complete DG-GSS variant further improves over GroupedSS2D on all four datasets, achieving 94.90\%, 88.91\%, 94.04\%, and 91.24\% Dice on PH$^2$, ISIC2018, CVC-ClinicDB, and CVC-ColonDB, respectively. The improvement is especially clear on CVC-ColonDB, where DG-GSS improves the Dice score by 0.60\% over GroupedSS2D and by 1.23\% over the MKIR baseline. This suggests that graph-based interaction among direction--group responses helps capture complementary contextual cues across scan directions and channel subspaces.
+
+In terms of efficiency, DG-GSS keeps the computation lightweight by applying state-space modeling only at low-resolution deep stages. Although the parameter count differs across variants, all models remain within the lightweight range, and DG-GSS achieves the best overall segmentation performance with only 0.493M parameters and 0.322G FLOPs. These results show that the proposed DG-GSS module improves the accuracy--efficiency balance of the student network rather than simply relying on a heavier architecture.
+
+
+
+\subsection{Teacher Assignment Analysis}
+
+In Table~\ref{tab:reference_results}, DINOv3 ViT-T/16 is used for the Tiny, Small, and Base variants, while DINOv3 ViT-B/16 is used for the Medium and Large variants. This setting follows a capacity-matched teacher assignment strategy. For compact students, a smaller teacher provides moderate semantic guidance while avoiding an excessive teacher--student capacity gap and unnecessary training overhead. For larger students, the stronger ViT-B/16 teacher can provide richer high-level semantic supervision, which can be better absorbed by the higher-capacity decoder representations. Since the DINOv3 teacher is used only during training and removed during inference, this teacher assignment affects only the training-time supervision strength and does not change the student-side deployment cost reported in Table~\ref{tab:reference_results}.

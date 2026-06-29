@@ -1,14 +1,13 @@
 # Fdb version 4
-["bibtex IEEE-conference-template-062824"] 1782478289.99008 "IEEE-conference-template-062824.aux" "IEEE-conference-template-062824.bbl" "IEEE-conference-template-062824" 1782478290.80603 0
+["bibtex IEEE-conference-template-062824"] 1782536876.93361 "IEEE-conference-template-062824.aux" "IEEE-conference-template-062824.bbl" "IEEE-conference-template-062824" 1782536877.88647 0
   "./paper_refs.bib" 1782451116.91106 8349 325c315e60acbdc695106b3248a876ca ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "IEEE-conference-template-062824.aux" 1782478290.55147 6304 d0ea2883faafccc1193d4c8bcc702033 "pdflatex"
+  "IEEE-conference-template-062824.aux" 1782536877.58353 6163 6a1b6bafae7ff6fac072d71b7cbd3d94 "pdflatex"
   (generated)
   "IEEE-conference-template-062824.bbl"
   "IEEE-conference-template-062824.blg"
   (rewritten before read)
-["pdflatex"] 1782478290.1059 "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1782478290.80619 0
-  "/Users/lihuitao/Downloads/AuthorKit27/BIBM_GAD-MambaUNet_Package/paper/IEEE-conference-template-062824.tex" 1782478273.53852 22587 e4e65ccd2bb7f1687dc6f124259dc113 ""
+["pdflatex"] 1782536877.07052 "IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1782536877.88662 0
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -98,18 +97,17 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1753678625 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1753678515 3345738 5ac3075ea5f2f3ef594563ed932ed56b ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "IEEE-conference-template-062824.aux" 1782478290.55147 6304 d0ea2883faafccc1193d4c8bcc702033 "pdflatex"
-  "IEEE-conference-template-062824.bbl" 1782478290.10378 6876 b981b8b005c1efd5586b240818914866 "bibtex IEEE-conference-template-062824"
-  "IEEE-conference-template-062824.tex" 1782478273.53852 22587 e4e65ccd2bb7f1687dc6f124259dc113 ""
+  "IEEE-conference-template-062824.aux" 1782536877.58353 6163 6a1b6bafae7ff6fac072d71b7cbd3d94 "pdflatex"
+  "IEEE-conference-template-062824.bbl" 1782536877.06898 6992 75e338e960636d8d0a96d753b816f4b9 "bibtex IEEE-conference-template-062824"
+  "IEEE-conference-template-062824.tex" 1782482515.13888 22924 18dddd01419fff7db70768f51a205b1c ""
   "IEEEtran.cls" 1781931502.87636 288304 b67b6fc6c2abb39f9b461923f5199343 ""
   "all-network.pdf" 1781931502.87545 124997 2b3a72f61d8c7461313edd92bc0ba8ca ""
-  "figures/avg_dice_flops.pdf" 1782052575.44889 22551 96989dfc8453eaaa89909f890e875b42 ""
-  "figures/avg_dice_params.pdf" 1782052575.25194 22310 814c747c52559f4d0c43e34e92d9162a ""
+  "figures/avg_dice_flops.pdf" 1782536851.55623 19742 29756973a655403d8f95db14000c2eac ""
+  "figures/avg_dice_params.pdf" 1782536851.37555 19865 7dd8016fe94d33fc5d9aa1c98ced4cc4 ""
   "sections/1-introduction.tex" 1782217382.04973 32315 7f2261b85b47f6bc669de57ce7b3fc1b ""
   "sections/2-related_work.tex" 1782218383.12048 14928 db29a3c01d3694676e7aca737a6a77a6 ""
-  "sections/3-method.tex" 1782476814.3983 22707 382194bf50f6510cd15c2e46c3250047 ""
-  "sections/4-experiments.tex" 1782477844.21562 5648 ed9af9acfc23fd353819a7093cc213fb ""
-  "sections/5-Ablation_Study.tex" 1782478289.05923 3208 5cc29d404a57afae0a99cb6d472d6b3b ""
+  "sections/3-method.tex" 1782536456.96404 22761 ab6b7b0e440500d0b7727ccf6f91e821 ""
+  "sections/4-experiments.tex" 1782536486.56 10502 2c2b27824d45bd836a7d9a30499b3246 ""
   (generated)
   "IEEE-conference-template-062824.aux"
   "IEEE-conference-template-062824.log"

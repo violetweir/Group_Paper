@@ -95,8 +95,15 @@ The overall GAD-MambaUNet follows a five-level encoder--decoder architecture, as
 
 For decoder reconstruction, skip connections transfer high-resolution encoder features to the corresponding decoder stages. Before fusion, a grouped attention gate filters the skip feature according to the decoder context, reducing irrelevant background responses. Let $\mathbf{g}$ denote the upsampled decoder feature and $\mathbf{s}$ the encoder feature at the same resolution. The gated skip feature is computed as
 \begin{equation}
-\boldsymbol{\alpha}=\sigma!\left(\psi!\left(\phi(W_g\mathbf{g}+W_s\mathbf{s})\right)\right),\qquad
-\hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s},
+\boldsymbol{\alpha}
+=
+\sigma\left(
+\psi\left(
+\phi(W_g\mathbf{g}+W_s\mathbf{s})
+\right)
+\right),
+\qquad 
+\hat{\mathbf{s}}=\boldsymbol{\alpha}\odot\mathbf{s}.
 \end{equation}
 where $W_g$ and $W_s$ are grouped convolutions, $\phi$ is ReLU, and $\psi$ maps the joint response to a spatial gate. The filtered skip feature $\hat{\mathbf{s}}$ is then fused with the decoder feature. The first decoder block operates at the deepest decoder level and provides the aligned student feature for the training-time DINOv3 supervision described in the next subsection.
 
@@ -157,14 +164,14 @@ where $\lambda_e$ is the distillation coefficient at epoch $e$.
         \toprule
         Method & Params(M) & FLOPs(G) & Throughput(/s) & PH$^2$ & ISIC2018 & ClinicDB & ColonDB & Avg. \\
         \midrule
-        U-Net & 34.53 & 65.53 & 119.03 & -- & 86.67 & 91.43 & 83.95 & -- \\
-        PraNet & 32.55 & 6.93 & 64.10 & -- & 88.46 & 91.71 & 89.16 & -- \\
-        UACANet & 69.16 & 31.51 & 43.28 & -- & 88.72 & 93.29 & 89.76 & -- \\
-        TransUNet & 105.32 & 38.52 & 65.35 & -- & 89.04 & 93.18 & 89.97 & -- \\
-        UNeXt & 1.47 & 0.57 & 172.41 & -- & 87.78 & 90.20 & 83.84 & -- \\
-        CMUNeXt & 0.418 & 1.09 & 175.43 & -- & 87.51 & 92.82 & 83.85 & -- \\
-        EGE-UNet & 0.054 & 0.072 & 101.01 & -- & 86.95 & 84.76 & 76.03 & -- \\
-        UltraLight VM-UNet & 0.050 & 0.060 & 98.03 & -- & 87.85 & 87.11 & 80.06 & -- \\
+        U-Net & 34.53 & 65.53 & 119.03 & 93.68 & 86.67 & 91.43 & 83.95 & 88.93 \\
+        PraNet & 32.55 & 6.93 & 64.10 & 94.16 & 88.46 & 91.71 & 89.16 & 90.87 \\
+        UACANet & 69.16 & 31.51 & 43.28 & 94.37 & 88.72 & 93.29 & 89.76 & 91.53 \\
+        TransUNet & 105.32 & 38.52 & 65.35 & 94.63 & 89.04 & 93.18 & 89.97 & 91.70 \\
+        UNeXt & 1.47 & 0.57 & 172.41 & 93.60 & 87.78 & 90.20 & 83.84 & 88.86 \\
+        CMUNeXt & 0.418 & 1.09 & 175.43 & 94.02 & 87.51 & 92.82 & 83.85 & 89.55 \\
+        EGE-UNet & 0.054 & 0.072 & 101.01 & 93.69 & 86.95 & 84.76 & 76.03 & 85.36 \\
+        UltraLight VM-UNet & 0.050 & 0.060 & 98.03 & 93.82 & 87.85 & 87.11 & 80.06 & 87.21 \\
         MK-UNet-T & 0.027 & 0.062 & 140.85 & 94.56 & 88.19 & 91.26 & 85.03 & 89.76 \\
         MK-UNet & 0.316 & 0.314 & 138.89 & 94.39 & 88.74 & 93.48 & 90.01 & 91.66 \\
         MK-UNet-L & 3.76 & 3.19 & 122.62 & 94.56 & 89.25 & 93.85 & 91.82 & 92.37 \\
@@ -173,10 +180,10 @@ where $\lambda_e$ is the distillation coefficient at epoch $e$.
         GAD-MambaUNet-Small (Ours) & 0.199 & 0.128 & -- & 94.40 & 88.63 & 93.85 & 90.17 & 91.76 \\
         GAD-MambaUNet-Base (Ours) & 0.493 & 0.322 & -- & 94.90 & 88.91 & 94.04 & 91.24 & 92.27 \\
         GAD-MambaUNet-Medium (Ours) & 1.839 & 0.955 & -- & 94.71 & 89.13 & 94.07 & 91.35 & 92.31 \\
-        GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & 89.34 & 94.70 & 92.16 & 92.77 \\
+        GAD-MambaUNet-Large (Ours) & 5.871 & 3.325 & -- & 94.88 & 89.34 & 94.70 & 91.37 & 92.57 \\
         \midrule
-        GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.054 & -- & 94.61 & 88.61 & 93.09 & 86.54 & 90.71 \\
-        GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.128 & -- & 94.73 & 88.94 & 94.16 & 91.51 & 92.34 \\
+        GAD-MambaUNet-Tiny + DINOv3 (Ours) & 0.076 & 0.054 & -- & 94.61 & 88.61 & 93.09 & 86.00 & 90.58 \\
+        GAD-MambaUNet-Small + DINOv3 (Ours) & 0.199 & 0.128 & -- & 94.73 & 88.94 & 94.16 & 88.77 & 91.65 \\
         GAD-MambaUNet-Base + DINOv3 (Ours) & 0.493 & 0.322 & -- & 95.16 & 89.06 & 94.17 & 91.96 & 92.59 \\
         GAD-MambaUNet-Medium + DINOv3 (Ours) & 1.839 & 0.955 & -- & 95.21 & 89.11 & 94.52 & \textbf{93.08} & 92.98 \\
         GAD-MambaUNet-Large + DINOv3 (Ours) & 5.871 & 3.325 & -- & \textbf{95.37} & \textbf{89.53} & \textbf{95.08} & 93.01 & \textbf{93.25} \\

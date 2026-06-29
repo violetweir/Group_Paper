@@ -1,8 +1,8 @@
-"""Create separate ColonDB Dice-vs-parameters and Dice-vs-FLOPs figures.
+"""Create separate average-Dice-vs-parameters and average-Dice-vs-FLOPs figures.
 
-Reference values are transcribed from MK_UNet/sections/3.experiments.tex.
-The six GAD-MambaUNet points are selected from the current experiment table:
-Tiny/Base/Large without DINOv3 and Tiny/Base/Medium with DINOv3.
+The values are synchronized with Table 1 of the current paper. The vertical
+axis reports the macro-average Dice score over PH2, ISIC2018, CVC-ClinicDB,
+and CVC-ColonDB.
 """
 
 from pathlib import Path
@@ -10,33 +10,28 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 
-# name, parameters (M), FLOPs (G), ColonDB Dice (%), color, marker
+# name, parameters (M), FLOPs (G), Avg. Dice (%), color, marker
 REFERENCE = [
-    ("UNet", 34.53, 65.53, 83.95, "#1f77b4", "o"),
-    ("UNet++", 9.16, 34.65, 87.88, "#4f81bd", "v"),
-    ("AttnUNet", 34.88, 66.64, 86.46, "#ff7f0e", "^"),
-    ("DeepLabv3+", 39.76, 14.92, 89.86, "#f4a261", "<"),
-    ("PraNet", 32.55, 6.93, 89.16, "#2ca02c", ">"),
-    ("UACANet", 69.16, 31.51, 89.76, "#fb9a99", "s"),
-    ("TransUNet", 105.32, 38.52, 89.97, "#8c564b", "D"),
-    ("SwinUNet", 27.17, 6.20, 89.07, "#c5b0d5", "p"),
-    ("Rolling-UNet-S", 1.78, 2.10, 82.48, "#9467bd", "P"),
-    ("UNeXt", 1.47, 0.57, 83.84, "#98df8a", "h"),
-    ("CMUNeXt", 0.418, 1.09, 83.85, "#7f7f7f", "d"),
-    ("EGE-UNet", 0.054, 0.072, 76.03, "#bcbd22", "X"),
-    ("UltraLight VM-UNet", 0.050, 0.060, 80.06, "#aec7e8", "H"),
-    ("MK-UNet-T", 0.027, 0.062, 85.03, "#66bb6a", ">"),
-    ("MK-UNet", 0.316, 0.314, 90.01, "#ff9800", "o"),
-    ("MK-UNet-L", 3.76, 3.19, 91.82, "#7cb342", "X"),
+    ("U-Net", 34.53, 65.53, 88.93, "#1f77b4", "o"),
+    ("PraNet", 32.55, 6.93, 90.87, "#2ca02c", ">"),
+    ("UACANet", 69.16, 31.51, 91.53, "#fb9a99", "s"),
+    ("TransUNet", 105.32, 38.52, 91.70, "#8c564b", "D"),
+    ("UNeXt", 1.47, 0.57, 88.86, "#98df8a", "h"),
+    ("CMUNeXt", 0.418, 1.09, 89.55, "#7f7f7f", "d"),
+    ("EGE-UNet", 0.054, 0.072, 85.36, "#bcbd22", "X"),
+    ("UltraLight VM-UNet", 0.050, 0.060, 87.21, "#aec7e8", "H"),
+    ("MK-UNet-T", 0.027, 0.062, 89.76, "#66bb6a", ">"),
+    ("MK-UNet", 0.316, 0.314, 91.66, "#ff9800", "o"),
+    ("MK-UNet-L", 3.76, 3.19, 92.37, "#7cb342", "X"),
 ]
 
 OURS = [
-    ("GAD-T", 0.076, 0.051, 83.20, "#e31a1c", "D"),
-    ("GAD-B", 0.493, 0.291, 91.24, "#e31a1c", "D"),
-    ("GAD-L", 5.871, 3.325, 92.16, "#e31a1c", "D"),
-    ("GAD-T + DINOv3", 0.076, 0.051, 86.54, "#e31a1c", "*"),
-    ("GAD-B + DINOv3", 0.493, 0.291, 91.96, "#e31a1c", "*"),
-    ("GAD-M + DINOv3", 1.839, 0.955, 93.08, "#e31a1c", "*"),
+    ("GAD-T", 0.076, 0.054, 89.59, "#e31a1c", "D"),
+    ("GAD-B", 0.493, 0.322, 92.27, "#e31a1c", "D"),
+    ("GAD-L", 5.871, 3.325, 92.57, "#e31a1c", "D"),
+    ("GAD-T + DINOv3", 0.076, 0.054, 90.58, "#e31a1c", "*"),
+    ("GAD-B + DINOv3", 0.493, 0.322, 92.59, "#e31a1c", "*"),
+    ("GAD-L + DINOv3", 5.871, 3.325, 93.25, "#e31a1c", "*"),
 ]
 
 
@@ -61,12 +56,11 @@ def plot_efficiency(cost_index, xlabel, filename, xmax):
         handles.append((handle, name))
 
     ax.set_xlim(-1.5, xmax)
-    # EGE-UNet is the lowest plotted reference (Dice=76.03); retain a small margin.
-    ax.set_ylim(75.5, 94.0)
+    ax.set_ylim(84.8, 93.8)
     ax.set_xticks(range(0, xmax + 1, 20 if xmax > 80 else 10))
-    ax.set_yticks(range(76, 95, 2))
+    ax.set_yticks(range(85, 94, 1))
     ax.set_xlabel(xlabel, labelpad=1)
-    ax.set_ylabel("Dice on ColonDB (%)", labelpad=1)
+    ax.set_ylabel("Average Dice (%)", labelpad=1)
     ax.grid(True, linestyle="-", linewidth=0.35, color="#909090", alpha=0.8)
     ax.tick_params(labelsize=7.5, pad=1.5)
     ax.spines[["top", "right"]].set_visible(False)
@@ -89,5 +83,5 @@ def plot_efficiency(cost_index, xlabel, filename, xmax):
 
 OUTPUT = Path(__file__).resolve().parents[1] / "figures"
 OUTPUT.mkdir(exist_ok=True)
-plot_efficiency(0, "#Params (M)", "colondb_dice_params.pdf", 110)
-plot_efficiency(1, "#FLOPs (G)", "colondb_dice_flops.pdf", 70)
+plot_efficiency(0, "#Params (M)", "avg_dice_params.pdf", 110)
+plot_efficiency(1, "#FLOPs (G)", "avg_dice_flops.pdf", 70)
